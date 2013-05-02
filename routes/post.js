@@ -1,7 +1,6 @@
 var database = require("ejdb").open("pinner", require("ejdb").DEFAULT_OPEN_MODE),
 	fs = require('fs'),
-	http = require('http'),
-	Zip = require('adm-zip');
+	http = require('http');
 
 
 
