@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{ title }}</title>
+	
+	<link rel="stylesheet" href="/stylesheets/bootstrap.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+
+	<script type="text/javascript" src="/javascripts/vendor/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/javascripts/vendor/underscore/underscore.js"></script>
+	<script type="text/javascript" src="/javascripts/vendor/backbone/backbone.js"></script>
+	<script type="text/javascript" src="/javascripts/vendor/bootstrap/bootstrap.js"></script>
+	<script type="text/javascript" src="/javascripts/app.js"></script>
+</head>
+<body>
+	<div id="Pinner">
+		<button id="new-post-btn" class="btn btn-large">+</button>
+		
+		<div id="post-list"></div>
+		<form id="new-post-form" class="well well-small span4 post">
+			<input type="text" name="title"   placeholder="Title">
+			<input type="text" name="link"  placeholder="Link">
+			<!-- <input type="text" name="version" placeholder="Version"> -->
+			<button id="create-post-btn" class="btn">Create</button>
+		</form>
+	</div>
+</body>
+</html>
