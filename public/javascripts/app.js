@@ -42,7 +42,7 @@ $(function(){
 			//Basti1dr : getSize Article
 			var selectSize = this.model.get("radioSize");
 			var classDiv = 'well well-small application ';
-			    classDiv += selectSize;
+				classDiv += selectSize;
 			this.$el.addClass(classDiv);
 			//this.$el.addClass("well well-small span6 application");
 			// TODO: use mustache.js template engine
@@ -50,6 +50,8 @@ $(function(){
 				html += '<p>';
 				html += '<span for=link  class=editable>'+this.model.get("link")+'</span>';
 				html += '</p>';
+				html += '<img src="http://placekitten.com/200/'+Math.floor(100*Math.random()%300+150)+'/"></img>';
+				
 				html += '<div class="btn-group">';
 				html += '<button class="btn toggle-edit-btn">edit</button>';
 				html += '<button class="btn btn-danger delete-btn">delete</button>';
@@ -122,6 +124,7 @@ $(function(){
 			_.each(this.posts.models, function(post){
 				self.add_post(post);
 			});
+			$('#post-list').packery();
 		},
 
 		show_create_form: function(){
@@ -162,5 +165,7 @@ $(function(){
 	});
 
 	var Pinner = new PinnerView();
+
+	new Packery( document.querySelector('.packery') );
 
 });
