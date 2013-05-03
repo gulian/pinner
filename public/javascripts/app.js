@@ -39,8 +39,12 @@ $(function(){
 		},
 
 		render: function(){
-
-			this.$el.addClass("well well-small span4 application");
+			//Basti1dr : getSize Article
+			var selectSize = this.model.get("radioSize");
+			var classDiv = 'well well-small application ';
+			    classDiv += selectSize;
+			this.$el.addClass(classDiv);
+			//this.$el.addClass("well well-small span6 application");
 			// TODO: use mustache.js template engine
 			var html  = '<p for=title   class=editable>'+this.model.get("title")+'</p>';
 				html += '<p>';
