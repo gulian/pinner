@@ -124,7 +124,7 @@ $(function(){
 			_.each(this.posts.models, function(post){
 				self.add_post(post);
 			});
-			$('#post-list').packery();
+			$('#post-list').layout();
 		},
 
 		show_create_form: function(){
