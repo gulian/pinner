@@ -47,7 +47,7 @@ body{
 }
 
 .pinner-tag{
-	margin: 0 3px;
+	margin: 0 3px 3px;
 }
 
 .pinner-control{
@@ -64,6 +64,36 @@ body{
 	&:hover{
 		opacity: 1;
 	}
+}
+
+#remote-gallery {
+	width: 220px;
+	float: right;
+	& img{
+		margin : 2px 0;
+	}
+}
+
+#new-post-rendered-tags{
+	& span{
+		cursor: pointer;
+	}
+}
+#new-post-form{
+	float:left;
+	::-webkit-input-placeholder { 
+		font-style: italic;
+	}
+	::-moz-placeholder { 
+		font-style: italic;
+		} /* firefox 19+ */
+	:-ms-input-placeholder { 
+		font-style: italic;
+		} /* ie */
+	input:-moz-placeholder { 
+		font-style: italic;
+	}
+
 }
 
 #Pinner{
