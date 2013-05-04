@@ -34,7 +34,8 @@ $(function(){
 			"click .delete-btn" : "confirmDelete",
 			"click .confirm-delete-btn" : "_delete",
 			"click .toggle-edit-btn" : "toggleUpdate",
-			"click .edit-btn" : "_update"
+			"click .edit-btn" : "_update",
+			"keypress .editable" : "enterHandler"
 		},
 
 		initialize: function(){
@@ -50,18 +51,10 @@ $(function(){
 				html += '<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
 				html += '<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
 				html += '</div>';
-				html += '<p>';
-				html += '<span class="label pinner-tag"><i class="icon-tags icon-white"></i> javascript</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> css</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> lolcatz</span>';
-				html += '</p>';
+				html += '<p><span class="label pinner-tag"><i class="icon-tags icon-white"></i> javascript</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> css</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> lolcatz</span></p>';
 				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html += '<p>';
-				html +=	'<span for=link class=editable>'+this.model.get("link")+'</span>';
-				html += '</p>';
+				html +=	'<p><span for=link class=editable>'+this.model.get("link")+'</span></p>';
 
-				// html += '<p>';
-				// html +=		'<button class="btn toggle-edit-btn">edit</button>';
-				// html +=		'<button class="btn btn-danger delete-btn">delete</button>';
-				// html += '</p>';
 			this.$el.html(html);
 			return this;
 		},
@@ -79,26 +72,30 @@ $(function(){
 		},
 
 		toggleUpdate: function(){
-			this.$el.find('.editable').attr('contenteditable', true);
-			this.$el.find('.toggle-edit-btn').toggleClass('toggle-edit-btn')
-												.toggleClass('edit-btn')
-												.toggleClass('btn-warning')
-												.html('save');
+			this.$el.find('.editable')
+						.attr('contenteditable', true).end()
+					.find('.toggle-edit-btn')
+						.toggleClass('toggle-edit-btn edit-btn btn-warning')
+						.html('save !').end()
+					.find('.editable')
+						.first().focus().end().end();
 		},
 
 		_update: function(){
 			var self = this ;
-			this.$el.find('.editable').each(function(key, attribute){
-				self.model.set($(attribute).attr('for'), $(attribute).html());
-			});
-			this.$el.find('.editable').attr('contenteditable', false);
-			this.$el.find('.edit-btn').toggleClass('toggle-edit-btn')
-										.toggleClass('edit-btn')
-										.html('edit');
+			this.$el.find('.editable')
+						.each(function(key, attribute){
+							self.model.set($(attribute).attr('for'), $(attribute).html());
+						})
+						.attr('contenteditable', false).end()
+					.find('.edit-btn')
+						.toggleClass('toggle-edit-btn edit-btn')
+						.html('edit').end();
 
 			this.model.save(null ,{
 				success: function(model){
 					self.render();
+					self.layout();
 			}});
 		},
 
@@ -106,6 +103,14 @@ $(function(){
 			new Masonry( document.getElementById('post-list'), {
 				columnWidth: columnWidth
 			});
+		},
+
+		enterHandler: function(event){
+			if(event.keyCode === 13){
+				this._update();
+				return false;
+			}
+			return true ;
 		}
 	});
 
@@ -121,7 +126,6 @@ $(function(){
 		el: $("#Pinner"),
 
 		events : {
-			"click #new-post-btn"    : 'show_create_form',
 			"click #create-post-btn" : 'create_post'
 		},
 
@@ -131,7 +135,6 @@ $(function(){
 			this.posts.fetch({success:function(){
 				self.render();
 			}});
-			$("#new-post-form").hide();
 		},
 
 		render: function(){
@@ -142,17 +145,6 @@ $(function(){
 			});
 			// called each time, dirty but works
 			self.layout();
-		},
-
-		show_create_form: function(){
-			console.log("createpost");
-			// $("#new-post-btn").hide();
-			$("#new-post-form").show();
-		},
-
-		hide_create_form: function(){
-			// $("#new-post-btn").show();
-			$("#new-post-form").hide();
 		},
 
 		create_post: function(event){

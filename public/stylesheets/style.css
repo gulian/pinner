@@ -2,7 +2,7 @@ body{padding:0;margin:0;}
 #post-list{margin-top:50px;}
 .post{max-width:250px;min-width:250px;margin:20px;box-sizing:border-box;transition-duration:0.4s;transition-property:left, right, top;-webkit-transition-duration:0.4s;-webkit-transition-property:left, right, top;}.post img{min-width:250px;margin-left:-14px;padding:8px;margin-top:-8px;margin-bottom:5px;}
 .post h3{margin:-10px auto 0px;}
-.editable{border-radius:5px;padding:5px;margin-right:5px;}.editable[contenteditable=true]{background-color:rgba(77, 77, 77, 0.29);}
+.editable{border-radius:5px;padding:5px;margin-right:5px;}.editable[contenteditable=true]{color:#faa732;}
 .pinner-tag{margin:0 3px;}
 .pinner-control{float:right;margin-top:-42px;margin-right:5px;opacity:0.5;transition-duration:0.4s;transition-property:opacity, width;-webkit-transition-duration:0.4s;-webkit-transition-property:opacity, width;}.pinner-control:hover{opacity:1;}
 #Pinner{max-width:1160px;margin:0 auto;}
