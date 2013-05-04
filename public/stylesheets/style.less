@@ -9,8 +9,9 @@ body{
 
 .post{
 	
-	max-width: 240px;
-  	margin: 5px;		// 240 + 2*5 = 250 in js file (collumn width)
+	max-width: 250px;
+  	margin: 20px;		// 250 + 2*20 = 290 in js file (collumn width)
+  	// TODO : use LESS variable to make this dynamic;
 	
 	box-sizing:border-box;
 
@@ -19,8 +20,13 @@ body{
 	-webkit-transition-duration: 0.4s;
 	-webkit-transition-property: left, right, top;
 	
-	&:img{
+	& img{
 		width : 100%;
+		margin-left: -9px;
+padding: 8px;
+margin-top: -8px;
+margin-bottom: 5px;
+
 	}
 }
 
@@ -39,7 +45,29 @@ body{
 	margin: 0 3px;
 }
 
+.pinner-control{
+	float: right;
+margin-top: -42px;
+margin-right: 5px;
+opacity: 0.5;
+
+	transition-duration: 0.4s;
+	transition-property: opacity, width;
+	-webkit-transition-duration: 0.4s;
+	-webkit-transition-property: opacity, width;
+
+	&:hover{
+opacity: 1;
+
+	}
+}
+
 #Pinner{
+
+	// TODO : media queries to allow user to get mode than 4 columns in high resolution
+	// ;
+	max-width: 1160px;
+	margin: 0 auto;
 // 	-webkit-backface-visibility: hidden;
 // -webkit-perspective: 1000;
 // transform: translateZ(0);

@@ -1,3 +1,5 @@
+var columnWidth = 290;
+
 $(function(){
 
 	"use strict";
@@ -7,8 +9,9 @@ $(function(){
 		defaults: function() {
 			return {
 				_id     : undefined,
-				title   : "new Pinner",
-				link    : "http://"
+				title   : 'Untitled pin',
+				link    : 'http://',
+				img		: 'http://placekitten.com/g/'+columnWidth+'/'+Math.floor(100*Math.random()%150+150)
 			};
 		},
 
@@ -28,7 +31,8 @@ $(function(){
 		tagName: "div",
 
 		events: {
-			"click .delete-btn" : "_delete",
+			"click .delete-btn" : "confirmDelete",
+			"click .confirm-delete-btn" : "_delete",
 			"click .toggle-edit-btn" : "toggleUpdate",
 			"click .edit-btn" : "_update"
 		},
@@ -41,23 +45,37 @@ $(function(){
 		render: function(){
 			this.$el.addClass("post thumbnail");
 			// TODO: use mustache.js template engine
-			var	html  = '<img src="'+'http://placekitten.com/g/250/'+Math.floor(100*Math.random()%150+150)+'"></img>';
-				html += '<p for=title class=editable>'+this.model.get("title")+'</p>';
+			var	html  = '<img class="img-polaroid" src="'+this.model.get("img")+'"></img>';
+				html += '<div class="btn-group pinner-control">';
+				html += '<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
+				html += '<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
+				html += '</div>';
 				html += '<p>';
-				html += 'tags:<span class="label pinner-tag">javascript</span><span class="label pinner-tag">css</span><span class="label pinner-tag">lolcatz</span>';
+				html += '<span class="label pinner-tag">javascript</span><span class="label pinner-tag">css</span><span class="label pinner-tag">lolcatz</span>';
 				html += '</p>';
+				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
 				html += '<p>';
-				html +=		'<button class="btn toggle-edit-btn">edit</button>';
-				html +=		'<button class="btn btn-danger delete-btn">delete</button>';
-				html +=		'<span for=link class=editable>'+this.model.get("link")+'</span>';
+				html +=	'<span for=link class=editable>'+this.model.get("link")+'</span>';
 				html += '</p>';
+
+				// html += '<p>';
+				// html +=		'<button class="btn toggle-edit-btn">edit</button>';
+				// html +=		'<button class="btn btn-danger delete-btn">delete</button>';
+				// html += '</p>';
 			this.$el.html(html);
 			return this;
+		},
+
+		confirmDelete: function(event){
+			var $btn = $(event.currentTarget);
+			$btn.html("really ?");
+			$btn.removeClass("delete-btn").addClass("confirm-delete-btn");
 		},
 
 		_delete: function(){
 			this.model.destroy();
 			this.remove();
+			this.layout();
 		},
 
 		toggleUpdate: function(){
@@ -81,6 +99,12 @@ $(function(){
 				success: function(model){
 					self.render();
 			}});
+		},
+
+		layout: function(){
+			new Masonry( document.getElementById('post-list'), {
+				columnWidth: columnWidth
+			});
 		}
 	});
 
@@ -116,9 +140,7 @@ $(function(){
 				self.add_post(post);
 			});
 			// called each time, dirty but works
-			new Masonry( document.getElementById('post-list'), {
-				columnWidth: 250
-			});
+			self.layout();
 		},
 
 		show_create_form: function(){
@@ -154,14 +176,19 @@ $(function(){
 		add_post : function(post){
 			// called each time, dirty but works
 			var postView = new PostView({model:post}),
+				self = this,
 				$el = postView.render().$el.find('img').load(function(){
-					new Masonry( document.getElementById('post-list'), {
-						columnWidth: 250
-					});
+					self.layout();
 				}).end();
 
 			this.$el.find("#post-list").prepend($el);
 			this.posts.add(post);
+		},
+
+		layout: function(){
+			new Masonry( document.getElementById('post-list'), {
+				columnWidth: columnWidth
+			});
 		}
 	});
 
