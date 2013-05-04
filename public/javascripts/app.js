@@ -39,24 +39,18 @@ $(function(){
 		},
 
 		render: function(){
-			//Basti1dr : getSize Article
-			var selectSize = this.model.get("radioSize");
-			var classDiv = 'well well-small application ';
-				classDiv += selectSize;
-			this.$el.addClass(classDiv);
-			//this.$el.addClass("well well-small span6 application");
+			this.$el.addClass("post thumbnail");
 			// TODO: use mustache.js template engine
-			var html  = '<p for=title   class=editable>'+this.model.get("title")+'</p>';
+			var	html  = '<img src="'+'http://placekitten.com/g/250/'+Math.floor(100*Math.random()%150+150)+'"></img>';
+				html += '<p for=title class=editable>'+this.model.get("title")+'</p>';
 				html += '<p>';
-				html += '<span for=link  class=editable>'+this.model.get("link")+'</span>';
+				html += 'tags:<span class="label pinner-tag">javascript</span><span class="label pinner-tag">css</span><span class="label pinner-tag">lolcatz</span>';
 				html += '</p>';
-				html += '<img src="http://placekitten.com/200/'+Math.floor(100*Math.random()%300+150)+'/"></img>';
-				
-				html += '<div class="btn-group">';
-				html += '<button class="btn toggle-edit-btn">edit</button>';
-				html += '<button class="btn btn-danger delete-btn">delete</button>';
-				html += '</div>';
-
+				html += '<p>';
+				html +=		'<button class="btn toggle-edit-btn">edit</button>';
+				html +=		'<button class="btn btn-danger delete-btn">delete</button>';
+				html +=		'<span for=link class=editable>'+this.model.get("link")+'</span>';
+				html += '</p>';
 			this.$el.html(html);
 			return this;
 		},
@@ -91,11 +85,8 @@ $(function(){
 	});
 
 	var PostList = Backbone.Collection.extend({
-
 		model: Post,
-
 		url: "post/"
-
 	});
 
 	var PostCollection = new PostList();
@@ -124,21 +115,25 @@ $(function(){
 			_.each(this.posts.models, function(post){
 				self.add_post(post);
 			});
-			$('#post-list').layout();
+			// called each time, dirty but works
+			new Masonry( document.getElementById('post-list'), {
+				columnWidth: 250
+			});
 		},
 
 		show_create_form: function(){
-			$("#new-post-btn").hide();
+			console.log("createpost");
+			// $("#new-post-btn").hide();
 			$("#new-post-form").show();
 		},
 
 		hide_create_form: function(){
-			$("#new-post-btn").show();
+			// $("#new-post-btn").show();
 			$("#new-post-form").hide();
 		},
 
-		create_post: function(){
-			arguments[0].preventDefault();
+		create_post: function(event){
+			event.preventDefault();
 
 			var post_fields = $("#new-post-form").serializeArray(),
 				post = new Post(),
@@ -157,15 +152,18 @@ $(function(){
 		},
 
 		add_post : function(post){
-			var postView = new PostView({model:post});
-			this.$el.find("#post-list").append(postView.render().el);
+			// called each time, dirty but works
+			var postView = new PostView({model:post}),
+				$el = postView.render().$el.find('img').load(function(){
+					new Masonry( document.getElementById('post-list'), {
+						columnWidth: 250
+					});
+				}).end();
+
+			this.$el.find("#post-list").prepend($el);
 			this.posts.add(post);
 		}
-
 	});
 
 	var Pinner = new PinnerView();
-
-	new Packery( document.querySelector('.packery') );
-
 });

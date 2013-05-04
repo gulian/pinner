@@ -10,25 +10,56 @@
 	<script type="text/javascript" src="/javascripts/vendor/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/javascripts/vendor/underscore/underscore.js"></script>
 	<script type="text/javascript" src="/javascripts/vendor/backbone/backbone.js"></script>
-	<script type="text/javascript" src="/javascripts/vendor/bootstrap/bootstrap.js"></script>
-	<script type="text/javascript" src="/javascripts/vendor/packery/packery.pkgd.min.js"></script>
+	<script type="text/javascript" src="/javascripts/vendor/bootstrap/bootstrap.js"></script> 
+	<script type="text/javascript" src="/javascripts/vendor/masonry/masonry.js"></script>
 	<script type="text/javascript" src="/javascripts/app.js"></script>
 
 </head>
 <body>
+
 	<div id="Pinner">
-		<button id="new-post-btn" class="btn btn-large">+</button>
-		
-		<div id="post-list" class="packery"></div>
-		<form id="new-post-form" class="well well-small span4 post">
-			<input type="text" name="title"   placeholder="Title">
-			<input type="text" name="link"  placeholder="Link">
-			<button id="create-post-btn" class="btn">Create</button>
-			<!--Temporary : select size -->
-			<input type="radio" name="radioSize" value="span4">S4</input>
-			<input type="radio" name="radioSize" value="span5">S5</input>
-			<input type="radio" name="radioSize" value="span6">S6</input>
-		</form>
+		<div class="navbar navbar-fixed-top">
+		  <div class="navbar-inner">
+			<div class="container">
+			  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="brand" href="#">Pinner</a>
+			  <div class="nav-collapse collapse">
+				<ul class="nav">
+				</ul>
+				<ul class="nav pull-right">
+					<li><button href="#addNewPinModel" role="button" id="new-post-btn" class="btn btn-info" data-toggle="modal">New pin</button></li>
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+
+		<div id="post-list"></div>
+
+
+ 
+		<div id="addNewPinModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewPinModelLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="addNewPinModelLabel">Add new Pin</h3>
+			</div>
+			<div class="modal-body">
+				<form id="new-post-form" class="post">
+					<input type="text" name="title"   placeholder="Title">
+					<input type="text" name="link"  placeholder="Link">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+				<button id="create-post-btn" data-dismiss="modal" class="btn btn-success">Add</button>
+			</div>
+		</div>
+
 	</div>
 </body>
 </html>
