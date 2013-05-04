@@ -51,7 +51,7 @@ $(function(){
 				html += '<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
 				html += '</div>';
 				html += '<p>';
-				html += '<span class="label pinner-tag">javascript</span><span class="label pinner-tag">css</span><span class="label pinner-tag">lolcatz</span>';
+				html += '<span class="label pinner-tag"><i class="icon-tags icon-white"></i> javascript</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> css</span><span class="label pinner-tag"><i class="icon-tags icon-white"></i> lolcatz</span>';
 				html += '</p>';
 				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
 				html += '<p>';
