@@ -69,7 +69,7 @@ $(function(){
 		confirmDelete: function(event){
 			var $btn = $(event.currentTarget);
 			$btn.html("really ?");
-			$btn.removeClass("delete-btn").addClass("confirm-delete-btn");
+			$btn.removeClass("delete-btn").addClass("confirm-delete-btn btn-danger");
 		},
 
 		_delete: function(){
@@ -82,6 +82,7 @@ $(function(){
 			this.$el.find('.editable').attr('contenteditable', true);
 			this.$el.find('.toggle-edit-btn').toggleClass('toggle-edit-btn')
 												.toggleClass('edit-btn')
+												.toggleClass('btn-warning')
 												.html('save');
 		},
 
