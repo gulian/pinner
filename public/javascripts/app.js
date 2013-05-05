@@ -162,11 +162,14 @@ $(function(){
 			event.preventDefault();
 
 			var hiddenTagsInput = $('#new-post-hidden-tags') ;
+
+			if($("#new-post-tags").val() !== ''){
+				hiddenTagsInput.val($("#new-post-tags").val());
+			}
+
 			$("#new-post-rendered-tags span").each(function(key, elt){
-				if(key !== $("#new-post-rendered-tags span").length - 1){
-					hiddenTagsInput.val(hiddenTagsInput.val() +  $(elt).data('tag') + ',');
-				} else {
-					hiddenTagsInput.val(hiddenTagsInput.val() +  $(elt).data('tag'));
+				if(key !== $("#new-post-rendered-tags span").length){
+					hiddenTagsInput.val(hiddenTagsInput.val() + ',' + $(elt).data('tag'));
 				}
 			});
 
@@ -232,16 +235,22 @@ $(function(){
 							// TODO: use masonry to layout remote galery ??
 							$('<span>').html($img).addClass('thumbnail').appendTo($gallery);
 						});
+
 						if(urls.length === 0){
 							var $alert = $("<div>").addClass('alert no-image-alert')
 													.html("<strong>CRAP</strong> No picture was found on this url")
 													.appendTo($gallery);
+						} else {
+							var $firstImg = $("#remote-gallery span");
+							$firstImg.addClass('selected');
+							$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
 						}
 					},
 					error : function(){
-						// TODO: handle error
 						$("#link-input-control-group").addClass("error");
-						console.log("error");
+						var $alert = $("<div>").addClass('alert alert-error no-image-alert')
+													.html("<strong>OOPS</strong> something very bad just happened")
+													.appendTo($("#remote-gallery").empty());
 					}
 				});
 			} else {
