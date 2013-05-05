@@ -24,9 +24,12 @@ body {
 }
 .post h3 {
   margin: -10px auto 0px;
+<<<<<<< HEAD
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+=======
+>>>>>>> 7511f87f4612700f809e6547265a8e9dd5b6197d
 }
 .post .link {
   overflow: hidden;
@@ -60,6 +63,10 @@ body {
 #remote-gallery {
   width: 235px;
   max-height: 280px;
+<<<<<<< HEAD
+=======
+  margin-top: 20px;
+>>>>>>> 7511f87f4612700f809e6547265a8e9dd5b6197d
   float: right;
 }
 #remote-gallery span {
@@ -124,3 +131,9 @@ body {
   max-width: 1160px;
   margin: 0 auto;
 }
+<<<<<<< HEAD
+=======
+.modal {
+  width: 570px;
+}
+>>>>>>> 7511f87f4612700f809e6547265a8e9dd5b6197d
