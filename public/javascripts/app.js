@@ -221,9 +221,11 @@ $(function(){
 
 			if(isUrl){
 				$("#link-input-control-group").removeClass("error");
-				// TODO : call fetch service
 				$.ajax({
 					url : '/fetch',
+					data: {
+						url : $input.val()
+					},
 					success : function(urls){
 						var $gallery = $("#remote-gallery");
 						_.each(urls, function(url){
@@ -232,11 +234,14 @@ $(function(){
 							$('<span>').html($img).addClass('thumbnail').appendTo($gallery);
 						});
 					},
-					error : function(){console.log("error");} // TODO: handle error
+					error : function(){
+						// TODO: handle error
+						$("#link-input-control-group").addClass("error");
+						console.log("error");
+					}
 				});
 			} else {
 				$("#link-input-control-group").addClass("error");
-				// TODO : warn user 
 			}
 		},
 
