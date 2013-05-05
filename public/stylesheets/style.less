@@ -67,10 +67,29 @@ body{
 }
 
 #remote-gallery {
-	width: 220px;
+	width: 235px;
+	max-height: 280px;
 	float: right;
-	& img{
-		margin : 2px 0;
+	& span {
+
+		&:hover{
+			border-color: #0088cc;
+			-webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+			-moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+			box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+		}
+
+		margin : 2px;
+		display: block;
+		width : 100px;
+		height : 100px;
+		float: left;
+		min-height: 100px;
+		& img{
+			width : 100px;
+			clip: rect(0px, 100px, 100px, 0px);
+			position: absolute;
+		}
 	}
 }
 
@@ -94,6 +113,10 @@ body{
 		font-style: italic;
 	}
 
+}
+
+#link-input-control-group{
+	margin-bottom: 0;
 }
 
 #Pinner{

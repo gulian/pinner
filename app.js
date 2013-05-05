@@ -29,9 +29,10 @@ app.get( '/post', post.showAll);
 app.get( '/post/:id', post.showOne);
 app.put('/post/:id', post.update);
 app.post('/post', post.add);
-// app.post('/post/:id', post.uploadSources);
 app.delete('/post/:id', post.delete);
 
+app.get('/fetch', post.fetch);
+
 http.createServer(app).listen(app.get('port'), function(){
-	console.log("terminapptor running on " + app.get('port'));
+	console.log("pinner running on " + app.get('port'));
 });

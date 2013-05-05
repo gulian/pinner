@@ -135,6 +135,7 @@ $(function(){
 		events : {
 			"click #create-post-btn" : 'create_post',
 			"keypress #new-post-tags" : 'tagsHandler',
+			"blur #new-post-link" : 'linkHandler',
 			"click #new-post-rendered-tags span" : "tagClickHandler"
 		},
 
@@ -177,7 +178,6 @@ $(function(){
 					post.set(field.name, field.value);
 				}
 			});
-			console.log(post)
 
 			post.save(null,{ success: function(){
 				self.add_post(post);
@@ -196,6 +196,7 @@ $(function(){
 			this.posts.add(post);
 			$("#new-post-form input").val('');
 			// TODO : reset img selection
+			// TODO : reset tags selection
 		},
 
 		tagsHandler:function(event){
@@ -209,6 +210,32 @@ $(function(){
 							.appendTo("#new-post-rendered-tags");
 				$input.val('');
 				return false;
+			}
+		},
+
+		linkHandler:function(event){
+			var $input = $("#new-post-link"),
+				tag = $input.val(),
+				isUrl = tag.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+
+			if(isUrl){
+				$("#link-input-control-group").removeClass("error");
+				// TODO : call fetch service
+				$.ajax({
+					url : '/fetch',
+					success : function(urls){
+						var $gallery = $("#remote-gallery");
+						_.each(urls, function(url){
+							var $img = $("<img>").attr({'src': url});
+							// TODO: use masonry to layout remote galery ??
+							$('<span>').html($img).addClass('thumbnail').appendTo($gallery);
+						});
+					},
+					error : function(){console.log("error");} // TODO: handle error
+				});
+			} else {
+				$("#link-input-control-group").addClass("error");
+				// TODO : warn user 
 			}
 		},
 
