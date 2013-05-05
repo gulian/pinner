@@ -48,7 +48,7 @@ exports.delete = function(req, res){
 
 // TODO : move this function in a proper file
 exports.fetch = function(req, res){
-
+	
 	var options = {
 		host: url.parse(req.query.url).hostname,
 		port: url.parse(req.query.url).port,

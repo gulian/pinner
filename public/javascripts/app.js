@@ -137,7 +137,9 @@ $(function(){
 			"keypress #new-post-tags" : 'tagsHandler',
 			"blur #new-post-link" : 'linkHandler',
 			"click #new-post-rendered-tags span" : "tagClickHandler",
-			"click #remote-gallery img": "imageClickHandler"
+			"click #remote-gallery img": "imageClickHandler",
+			"click #cancel-post-btn" : 'resetPostFields',
+			"click #close-post-btn" : 'resetPostFields'
 		},
 
 		initialize: function(){
@@ -200,8 +202,7 @@ $(function(){
 
 			this.$el.find("#post-list").prepend($el);
 			this.posts.add(post);
-			$("#new-post-form input").val('');
-			$("#remote-gallery, #new-post-rendered-tags").empty();
+			this.resetPostFields();
 		},
 
 		tagsHandler:function(event){
@@ -275,6 +276,10 @@ $(function(){
 			new Masonry( document.getElementById('post-list'), {
 				columnWidth: columnWidth
 			});
+		},
+		resetPostFields: function(){
+			$("#new-post-form input").val('');
+			$("#remote-gallery, #new-post-rendered-tags").empty();
 		}
 	});
 

@@ -43,7 +43,7 @@
  
 		<div id="addNewPinModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewPinModelLabel" aria-hidden="true">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<button id="close-post-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h3 id="addNewPinModelLabel">Add new Pin</h3>
 			</div>
 			<div class="modal-body">
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+				<button id="cancel-post-btn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 				<button id="create-post-btn" data-dismiss="modal" class="btn btn-success">Add</button>
 			</div>
 		</div>
