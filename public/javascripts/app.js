@@ -136,7 +136,8 @@ $(function(){
 			"click #create-post-btn" : 'create_post',
 			"keypress #new-post-tags" : 'tagsHandler',
 			"blur #new-post-link" : 'linkHandler',
-			"click #new-post-rendered-tags span" : "tagClickHandler"
+			"click #new-post-rendered-tags span" : "tagClickHandler",
+			"click #remote-gallery img": "imageClickHandler"
 		},
 
 		initialize: function(){
@@ -241,6 +242,13 @@ $(function(){
 
 		tagClickHandler: function(event){
 			$(event.currentTarget).remove();
+		},
+
+		imageClickHandler: function(event){
+			$("#remote-gallery span").removeClass('selected');
+			var $img = $(event.currentTarget);
+			$img.parent().addClass('selected');
+			$('#new-post-hidden-img').val($img.attr('src'));
 		},
 
 		layout: function(){

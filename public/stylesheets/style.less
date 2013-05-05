@@ -72,6 +72,11 @@ body{
 	float: right;
 	& span {
 
+	transition-duration: 0.4s;
+	transition-property: height,width;
+	-webkit-transition-duration: 0.4s;
+	-webkit-transition-property: height,width;
+
 		&:hover{
 			border-color: #0088cc;
 			-webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
@@ -79,6 +84,19 @@ body{
 			box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 		}
 
+		&.selected {
+
+			& img{
+
+			}
+
+			border-color: red;
+			-webkit-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+			   -moz-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+			        box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+		}
+
+		cursor:pointer;
 		margin : 2px;
 		display: block;
 		width : 100px;

@@ -70,6 +70,7 @@
 					</div>
 					<div id="new-post-rendered-tags"></div>
 					<input type="hidden" name="tags" id="new-post-hidden-tags" >
+					<input type="hidden" name="img" id="new-post-hidden-img" >
 				</form>
 				<div id="remote-gallery">
 					
