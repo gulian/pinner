@@ -244,7 +244,7 @@ $(function(){
 													.html("<strong>CRAP</strong> No picture was found on this url")
 													.appendTo($gallery);
 						} else {
-							var $firstImg = $("#remote-gallery span");
+							var $firstImg = $("#remote-gallery span").first();
 							$firstImg.addClass('selected');
 							$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
 						}
@@ -258,6 +258,10 @@ $(function(){
 				});
 			} else {
 				$("#link-input-control-group").addClass("error");
+				var $alert = $("<div>").addClass('alert alert-error no-image-alert')
+											.html("<strong>Error</strong> url is not valid")
+											.appendTo($("#remote-gallery").empty());
+
 			}
 		},
 
