@@ -226,12 +226,17 @@ $(function(){
 						url : $input.val()
 					},
 					success : function(urls){
-						var $gallery = $("#remote-gallery");
+						var $gallery = $("#remote-gallery").empty();
 						_.each(urls, function(url){
 							var $img = $("<img>").attr({'src': url});
 							// TODO: use masonry to layout remote galery ??
 							$('<span>').html($img).addClass('thumbnail').appendTo($gallery);
 						});
+						if(urls.length === 0){
+							var $alert = $("<div>").addClass('alert no-image-alert')
+													.html("<strong>CRAP</strong> No picture was found on this url")
+													.appendTo($gallery);
+						}
 					},
 					error : function(){
 						// TODO: handle error

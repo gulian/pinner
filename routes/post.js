@@ -68,7 +68,8 @@ exports.fetch = function(req, res){
 			}
 			var imgs = [];
 			for (var i = 0; i < matches.length; i++) {
-				imgs.push(matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi)[0]);
+				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+				if(src) imgs.push(src[0]);
 			}
 			res.json(200, imgs);
 		});
