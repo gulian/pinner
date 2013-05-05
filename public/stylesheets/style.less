@@ -1,19 +1,14 @@
-body{
-	padding: 0;
-	margin:0;
-}
-
 #post-list{
 	margin-top: 50px; 
 }
 
+@column-width : 260px;
+
 .post{
 	
-  	// TODO : use LESS variable to make this dynamic;
-	max-width: 250px;
-	min-width: 250px;
-  	margin: 20px;		// 250 + 2*20 = 290 in js file (collumn width)
-	
+	max-width: @column-width;
+	min-width: @column-width;
+  	margin: 10px;
 	box-sizing:border-box;
 
 	transition-duration: 0.4s;
@@ -22,7 +17,7 @@ body{
 	-webkit-transition-property: left, right, top;
 	
 	& img{
-		min-width : 250px;
+		min-width : @column-width;
 		margin-left: -14px;
 		padding: 8px;
 		margin-top: -8px;
