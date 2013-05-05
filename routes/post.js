@@ -70,13 +70,17 @@ exports.fetch = function(req, res){
 			var imgs = [];
 			for (var i = 0; i < matches.length; i++) {
 				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-				if(src && src.indexOf(parsedUrl.protocol) !== -1)
+
+				console.log(src[0], parsedUrl.protocol, src[0].indexOf(parsedUrl.protocol));
+
+				if(src && src[0].indexOf('http') !== -1){
 					imgs.push(src[0]);
+				}
 				else if(src){
 					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+src[0]);
 				}
 			}
-			console.log(imgs);
+			// console.log(imgs);
 			res.json(200, imgs);
 		});
 	}).on('error', function(e) {
