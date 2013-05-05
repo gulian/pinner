@@ -60,7 +60,7 @@ $(function(){
 
 				html += '</p>';
 				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html +=	'<p><span for=link class=editable>'+this.model.get("link")+'</span></p>';
+				html +=	'<p class="link"><a class="editable" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a></p>';
 
 			this.$el.html(html);
 			return this;
@@ -196,8 +196,7 @@ $(function(){
 			this.$el.find("#post-list").prepend($el);
 			this.posts.add(post);
 			$("#new-post-form input").val('');
-			// TODO : reset img selection
-			// TODO : reset tags selection
+			$("#remote-gallery, #new-post-rendered-tags").empty();
 		},
 
 		tagsHandler:function(event){

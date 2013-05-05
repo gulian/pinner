@@ -25,6 +25,11 @@ body {
 .post h3 {
   margin: -10px auto 0px;
 }
+.post .link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .editable {
   border-radius: 5px;
   padding: 5px;
