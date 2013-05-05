@@ -161,17 +161,19 @@ $(function(){
 		create_post: function(event){
 			event.preventDefault();
 
-			var hiddenTagsInput = $('#new-post-hidden-tags') ;
-
-			if($("#new-post-tags").val() !== ''){
-				hiddenTagsInput.val($("#new-post-tags").val());
-			}
+			var hiddenTagsInput = $('#new-post-hidden-tags').val('') ;
 
 			$("#new-post-rendered-tags span").each(function(key, elt){
-				if(key !== $("#new-post-rendered-tags span").length){
+				if(key !== $("#new-post-rendered-tags span").length && hiddenTagsInput.val().indexOf($(elt).data('tag')) === -1 ){
 					hiddenTagsInput.val(hiddenTagsInput.val() + ',' + $(elt).data('tag'));
 				}
 			});
+
+			if($("#new-post-tags").val().trim() !== ''){
+				hiddenTagsInput.val(hiddenTagsInput.val() + ',' + $("#new-post-tags").val());
+			}
+
+			hiddenTagsInput.val(hiddenTagsInput.val().substr(1,hiddenTagsInput.val().length));
 
 			var post_fields = $("#new-post-form").serializeArray(),
 				post = new Post(),
@@ -203,7 +205,7 @@ $(function(){
 		},
 
 		tagsHandler:function(event){
-			if(event.keyCode === 58 || event.keyCode === 59 || event.keyCode === 44){ // ',', ';' or ':'
+			if(event.keyCode === 58 || event.keyCode === 59 || event.keyCode === 13 || event.keyCode === 44){ // ',', ';', '\n' or ':'
 				var $input = $("#new-post-tags");
 				var tag = $input.val();
 				if(tag === '') return false;
