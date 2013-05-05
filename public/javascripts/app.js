@@ -12,7 +12,8 @@ $(function(){
 				title   : 'Untitled pin',
 				link    : 'http://',
 				img		: 'http://placekitten.com/g/'+columnWidth+'/'+Math.floor(100*Math.random()%150+150),
-				tags    : ''
+				tags    : '',
+				count   : 0
 			};
 		},
 
@@ -36,7 +37,8 @@ $(function(){
 			"click .confirm-delete-btn" : "_delete",
 			"click .toggle-edit-btn" : "toggleUpdate",
 			"click .edit-btn" : "_update",
-			"keypress .editable" : "enterHandler"
+			"keypress .editable" : "enterHandler",
+			"click .post-link" : "linkClickHandler"
 		},
 
 		initialize: function(){
@@ -60,7 +62,8 @@ $(function(){
 
 				html += '</p>';
 				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html +=	'<p class="link"><a class="editable" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a></p>';
+				html +=	'<p class="link"><span class="badge badge-info">'+this.model.get("count")+'</span><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a>';
+				html += '</p>';
 
 			this.$el.html(html);
 			return this;
@@ -110,6 +113,11 @@ $(function(){
 			new Masonry( document.getElementById('post-list'), {
 				columnWidth: columnWidth
 			});
+		},
+
+		linkClickHandler: function(){
+			this.model.set('count', 1*this.model.get('count') + 1 );
+			this.model.save();
 		},
 
 		enterHandler: function(event){
