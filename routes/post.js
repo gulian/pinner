@@ -48,11 +48,12 @@ exports.delete = function(req, res){
 
 // TODO : move this function in a proper file
 exports.fetch = function(req, res){
-	
+
+	var parsedUrl = url.parse(req.query.url) ;
 	var options = {
-		host: url.parse(req.query.url).hostname,
-		port: url.parse(req.query.url).port,
-		path: url.parse(req.query.url).path
+		host: parsedUrl.hostname,
+		port: parsedUrl.port,
+		path: parsedUrl.path
 	};
 
 	http.get(options, function(http_response) {
@@ -69,8 +70,13 @@ exports.fetch = function(req, res){
 			var imgs = [];
 			for (var i = 0; i < matches.length; i++) {
 				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-				if(src) imgs.push(src[0]);
+				if(src && src.indexOf(parsedUrl.protocol) !== -1)
+					imgs.push(src[0]);
+				else if(src){
+					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+src[0]);
+				}
 			}
+			console.log(imgs);
 			res.json(200, imgs);
 		});
 	}).on('error', function(e) {
