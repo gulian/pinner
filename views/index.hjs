@@ -7,12 +7,14 @@
 	<link rel="stylesheet" href="/stylesheets/bootstrap.css">
 	<link rel="stylesheet" href="/stylesheets/style.css">
 
-	<script type="text/javascript" src="/javascripts/vendor/jquery/jquery.js"></script>
-	<script type="text/javascript" src="/javascripts/vendor/underscore/underscore.js"></script>
-	<script type="text/javascript" src="/javascripts/vendor/backbone/backbone.js"></script>
-	<script type="text/javascript" src="/javascripts/vendor/bootstrap/bootstrap.js"></script> 
-	<script type="text/javascript" src="/javascripts/vendor/masonry/masonry.js"></script>
-	<script type="text/javascript" src="/javascripts/app.js"></script>
+	<script src="/javascripts/vendor/jquery/jquery.js"></script>
+	<script src="/javascripts/vendor/underscore/underscore.js"></script>
+	<script src="/javascripts/vendor/backbone/backbone.js"></script>
+	<script src="/javascripts/vendor/bootstrap/bootstrap.js"></script> 
+	<script src="/javascripts/vendor/masonry/masonry.js"></script>
+	<script src="/javascripts/vendor/timeago/moment.js"></script>
+	<script src="/javascripts/vendor/timeago/livestamp.js"></script>
+	<script src="/javascripts/app.js"></script>
 
 </head>
 <body>

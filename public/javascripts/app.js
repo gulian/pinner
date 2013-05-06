@@ -13,7 +13,8 @@ $(function(){
 				link    : 'http://',
 				img		: 'http://placekitten.com/g/'+columnWidth+'/'+Math.floor(100*Math.random()%150+150),
 				tags    : '',
-				count   : 0
+				count   : 0,
+				created : 0
 			};
 		},
 
@@ -62,6 +63,8 @@ $(function(){
 					html += '<span class="label pinner-tag"><i class="icon-tag icon-white"></i> '+tag+'</span>';
 				});
 				html += '</p>';
+				html += '<span>Pinned <span data-livestamp="'+this.model.get("created")+'"></span></span>';
+
 
 
 			this.$el.html(html);
@@ -193,6 +196,8 @@ $(function(){
 					post.set(field.name, field.value);
 				}
 			});
+
+			post.set('created', new Date().getTime()/1000);
 
 			post.save(null,{ success: function(){
 				self.add_post(post);
