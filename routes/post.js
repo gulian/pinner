@@ -105,8 +105,13 @@ exports.fetch = function(req, res){
 				}
 			}
 			page_info.imgs = imgs;
-			page_info.title = body.match(/<title>(.*?)<\/title>/i)[1];
-			console.log(page_info.title);
+			page_info.title = body.match(/<title>(.*?)<\/title>/i);
+
+			if(page_info.title)
+				page_info = page_info.title[1];
+			else
+				page_info = '';
+
 			res.json(200, page_info);
 		});
 	}).on('error', function(e) {
