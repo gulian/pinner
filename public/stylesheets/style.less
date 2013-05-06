@@ -9,40 +9,60 @@
 	max-width: @column-width + 18;
 	min-width: @column-width + 18;
   	margin: 10px;
+  	padding: 0;
 	box-sizing:border-box;
 
 	transition-duration: 0.4s;
 	transition-property: left, right, top;
 	-webkit-transition-duration: 0.4s;
 	-webkit-transition-property: left, right, top;
-	
+
 	& img{
-		min-width : @column-width;
-		max-width : @column-width;
-		margin-left: -5px;
-		padding: 8px;
-		margin-top: -8px;
-		margin-bottom: 5px;
+		min-width : 100%;
+		max-width : 100%;
+		margin:0;
+		padding:0;
+		border-radius: 3px 3px 0 0;
 	}
 
 	& h3{
-		margin: -10px auto 0px;		
+		margin: -10px 0px -10px -5px;	
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
-	.link{
+	.post-link{
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		margin: 5px 0 0 0px;
+		display: block;
+		font-size: 16px;
+		background-image: url(../img/link.png);
+		background-size: 20px;
+		background-repeat: no-repeat;
+		padding-left: 25px;
+		background-position: 0% 50%;
+		color : #777777;
+	}
+
+	.post-detail{
+		padding:10px;
+	}
+
+	.post-timestamp{
+		font-size: 12px;
+	}
+
+	.pinner-tags{
+		margin:0;
 	}
 }
 
 .editable{
 
 	&[contenteditable=true]{
-		// background-color: rgba(77, 77, 77, 0.29);
 		color: #faa732;
 	}
 	
@@ -57,10 +77,9 @@
 
 .pinner-control{
 	float: right;
-	margin-top: -42px;
-	margin-right: 5px;
+	margin-top: -40px;
+	margin-right: 0px;
 	opacity: 0.5;
-
 	transition-duration: 0.4s;
 	transition-property: opacity, width;
 	-webkit-transition-duration: 0.4s;

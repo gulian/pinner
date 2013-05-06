@@ -50,22 +50,28 @@ $(function(){
 		render: function(){
 			this.$el.addClass("post thumbnail");
 			// TODO: use mustache.js template engine
-			var	html  = '<img class="img-polaroid" src="'+this.model.get("img")+'"></img>';
-				html += '<div class="btn-group pinner-control">';
-				html += '<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
-				html += '<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
+
+			var parser = document.createElement('a');
+			parser.href = this.model.get("link");
+			var link = parser.hostname || "/!\\ Invalid link !" ;
+
+			var	html  = '<img class="post-img" src="'+this.model.get("img")+'"></img>';
+				html += '<div class="post-detail">';
+				html += '	<div class="btn-group pinner-control">';
+				html += '		<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
+				html += '		<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
+				html += '	</div>';
+				html += '	<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
+				html += '	<div class="post-timestamp">Pinned <span data-livestamp="'+this.model.get("created")+'"></span></div>';
+				html +=	'	<p class="link"><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+link+'</a></p>';
+				html += '	<p class="pinner-tags">';
+				if(this.model.get("tags") !== '') _.each(this.model.get("tags").split(','), function(tag){
+					html +='	<span class="label pinner-tag">'+tag+'</span>';
+				});
+				html += '	</p>';
 				html += '</div>';
 
-				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html +=	'<p class="link">('+this.model.get("count")+')<a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a></p>';
-				html += '<p>';
-				if(this.model.get("tags") !== '') _.each(this.model.get("tags").split(','), function(tag){
-					html += '<span class="label pinner-tag"><i class="icon-tag icon-white"></i> '+tag+'</span>';
-				});
-				html += '</p>';
-				html += '<span>Pinned <span data-livestamp="'+this.model.get("created")+'"></span></span>';
-
-
+//('+this.model.get("count")+')
 
 			this.$el.html(html);
 			return this;
@@ -90,11 +96,18 @@ $(function(){
 						.toggleClass('toggle-edit-btn edit-btn btn-warning')
 						.html('save !').end()
 					.find('.editable')
-						.first().focus().end().end();
+						.first().focus().end().end()
+					.find('.post-link')
+						.html(this.model.get('link')).end();
 		},
 
 		_update: function(){
 			var self = this ;
+
+			var parser = document.createElement('a');
+			parser.href = this.model.get("link");
+			var link = parser.hostname || "/!\\ Invalid link !" ;
+
 			this.$el.find('.editable')
 						.each(function(key, attribute){
 							self.model.set($(attribute).attr('for'), $(attribute).html());
@@ -102,7 +115,9 @@ $(function(){
 						.attr('contenteditable', false).end()
 					.find('.edit-btn')
 						.toggleClass('toggle-edit-btn edit-btn')
-						.html('edit').end();
+						.html('edit').end()
+					.find('.post-link')
+						.html(link).end();
 
 			this.model.save(null ,{
 				success: function(model){
