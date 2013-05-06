@@ -2,12 +2,12 @@
 	margin-top: 50px; 
 }
 
-@column-width : 260px;
+@column-width : 218px;
 
 .post{
 	
-	max-width: @column-width;
-	min-width: @column-width;
+	max-width: @column-width + 18;
+	min-width: @column-width + 18;
   	margin: 10px;
 	box-sizing:border-box;
 
@@ -18,7 +18,8 @@
 	
 	& img{
 		min-width : @column-width;
-		margin-left: -14px;
+		max-width : @column-width;
+		margin-left: -5px;
 		padding: 8px;
 		margin-top: -8px;
 		margin-bottom: 5px;

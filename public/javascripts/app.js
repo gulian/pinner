@@ -54,16 +54,15 @@ $(function(){
 				html += '<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
 				html += '<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
 				html += '</div>';
-				html += '<p>';
 
+				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
+				html +=	'<p class="link">('+this.model.get("count")+')<a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a></p>';
+				html += '<p>';
 				if(this.model.get("tags") !== '') _.each(this.model.get("tags").split(','), function(tag){
 					html += '<span class="label pinner-tag"><i class="icon-tag icon-white"></i> '+tag+'</span>';
 				});
+				html += '</p>';
 
-				html += '</p>';
-				html += '<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html +=	'<p class="link"><span class="badge badge-info">'+this.model.get("count")+'</span><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+this.model.get("link")+'</a>';
-				html += '</p>';
 
 			this.$el.html(html);
 			return this;
@@ -228,19 +227,41 @@ $(function(){
 		},
 
 		linkHandler:function(event){
+			// TODO : refactor, this function is very ugly
+			if($("#new-post-link").val().trim() === ""){
+				return;
+			}
+
 			var $input = $("#new-post-link"),
-				tag = $input.val(),
-				isUrl = tag.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+				link = $input.val(),
+				isUrl = link.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi),
+				$title_input = $('input[name=title]').attr('disabled',true),
+				$gallery = $("#remote-gallery").empty();
 
 			if(isUrl){
 				$("#link-input-control-group").removeClass("error");
+
+				var $alert = $("<div>")
+									.addClass('alert alert-info no-image-alert ')
+									.html("We are looking for images in your link ...")
+									.appendTo($("#remote-gallery")
+									.empty());
+
 				$.ajax({
 					url : '/fetch',
 					data: {
 						url : $input.val()
 					},
-					success : function(urls){
-						var $gallery = $("#remote-gallery").empty();
+					success : function(page_info){
+						var urls = page_info.imgs || [];
+						if($title_input.val().trim() === "") {
+							$title_input.val(page_info.title);
+							$("#new-post-tags").focus();
+						} else {
+							$title_input.focus();
+						}
+						$title_input.attr('disabled',false);
+						$gallery = $gallery.empty();
 						_.each(urls, function(url){
 							var $img = $("<img>").attr({'src': url});
 							// TODO: use masonry to layout remote galery ??
@@ -248,28 +269,37 @@ $(function(){
 						});
 
 						if(urls.length === 0){
-							var $alert = $("<div>").addClass('alert no-image-alert')
-													.html("<strong>CRAP</strong> No picture was found on this url")
-													.appendTo($gallery);
+							$("<div>")
+									.addClass('alert no-image-alert')
+									.html("<strong>CRAP</strong> No picture was found on this url")
+									.appendTo($gallery);
 						} else {
 							var $firstImg = $("#remote-gallery span").first();
 							$firstImg.addClass('selected');
 							$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
 						}
 					},
-					error : function(){
+					error : function(xhr){
+						var message;
+						if(xhr.status === 404){
+							message = "this URL seems to be unreachable";
+						} else {
+							message = "something very bad just happened";
+						}
+						$title_input.attr('disabled',false);
 						$("#link-input-control-group").addClass("error");
 						var $alert = $("<div>").addClass('alert alert-error no-image-alert')
-													.html("<strong>OOPS</strong> something very bad just happened")
-													.appendTo($("#remote-gallery").empty());
+													.html("<strong>OOPS</strong> "+message)
+													.appendTo($gallery.empty());
 					}
 				});
 			} else {
-				$("#link-input-control-group").addClass("error");
-				var $alert = $("<div>").addClass('alert alert-error no-image-alert')
-											.html("<strong>Error</strong> url is not valid")
-											.appendTo($("#remote-gallery").empty());
-
+				$("#link-input-control-group")
+						.addClass("error");
+				$("<div>")
+						.addClass('alert alert-error no-image-alert')
+						.html("<strong>Error</strong> url is not valid")
+						.appendTo($("#remote-gallery").empty());
 			}
 		},
 

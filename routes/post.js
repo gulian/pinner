@@ -49,7 +49,34 @@ exports.delete = function(req, res){
 // TODO : move this function in a proper file
 exports.fetch = function(req, res){
 
-	var parsedUrl = url.parse(req.query.url) ;
+	var url = require('url');
+	var url_t = req.query.url;
+	var isImage = url_t.match(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/gi)[1];
+	var page_info = {};
+	var imgs = [];
+
+	if(isImage){
+		imgs.push(url_t);
+		page_info.imgs = imgs;
+		page_info.title = url_t;
+		res.json(200, page_info);
+		return;
+	}
+
+	// var phantom = require('phantom');
+
+	// phantom.create(function(ph){
+	// 	ph.createPage(function(page){
+	// 		page.open(url_t ,function(){
+	// 		    var document = page.evaluate(function () {
+	// 		        return document;
+	// 		    });
+	// 		    console.log(document);
+	// 		});
+	// 	});
+	// });
+
+	var parsedUrl = url.parse(url_t) ;
 	var options = {
 		host: parsedUrl.hostname,
 		port: parsedUrl.port,
@@ -67,11 +94,8 @@ exports.fetch = function(req, res){
 				res.json(200, []);
 				return ;
 			}
-			var imgs = [];
 			for (var i = 0; i < matches.length; i++) {
 				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-
-				console.log(src[0], parsedUrl.protocol, src[0].indexOf(parsedUrl.protocol));
 
 				if(src && src[0].indexOf('http') !== -1){
 					imgs.push(src[0]);
@@ -80,11 +104,14 @@ exports.fetch = function(req, res){
 					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+src[0]);
 				}
 			}
-			// console.log(imgs);
-			res.json(200, imgs);
+			page_info.imgs = imgs;
+			page_info.title = body.match(/<title>(.*?)<\/title>/i)[1];
+			console.log(page_info.title);
+			res.json(200, page_info);
 		});
 	}).on('error', function(e) {
 		console.log("Got error: " + e.message);
+		res.json(404, []);
 	});
 
 };
