@@ -62,7 +62,8 @@ $(function(){
 				html += '		<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
 				html += '	</div>';
 				html += '	<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html += '	<div class="post-timestamp">Pinned <span data-livestamp="'+this.model.get("created")+'"></span></div>';
+				// <a href="#" id="toto" data-toggle="tooltip" title="first tooltip">hover over me</a>
+				html += '	<div class="post-timestamp"><a href=# data-toggle="tooltip" class="count-tooltip" title="'+this.model.get("count")+'">Pinned <span data-livestamp="'+this.model.get("created")+'"></span></a></div>';
 				html +=	'	<p class="link"><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+link+'</a></p>';
 				html += '	<p class="pinner-tags">';
 				if(this.model.get("tags") !== '') _.each(this.model.get("tags").split(','), function(tag){
@@ -183,6 +184,7 @@ $(function(){
 			});
 			// called each time, dirty but works
 			self.layout();
+			$(".count-tooltip").tooltip({'placement': 'left'});
 		},
 
 		create_post: function(event){

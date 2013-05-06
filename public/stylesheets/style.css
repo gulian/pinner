@@ -3,7 +3,7 @@
 .post h3{margin:-10px 0px -10px -5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .post .post-link{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:5px 0 0 0px;display:block;font-size:16px;background-image:url(../img/link.png);background-size:20px;background-repeat:no-repeat;padding-left:25px;background-position:0% 50%;color:#777777;}
 .post .post-detail{padding:10px;}
-.post .post-timestamp{font-size:12px;}
+.post .post-timestamp{font-size:12px;}.post .post-timestamp .count-tooltip{padding-left:10px;margin-left:-10px;}
 .post .pinner-tags{margin:0;}
 .editable{border-radius:5px;padding:5px;margin-right:5px;}.editable[contenteditable=true]{color:#faa732;}
 .pinner-tag{margin:0 3px 3px;}

@@ -15,7 +15,7 @@
 	<script src="/javascripts/vendor/timeago/moment.js"></script>
 	<script src="/javascripts/vendor/timeago/livestamp.js"></script>
 	<script src="/javascripts/app.js"></script>
-
+ 	<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
 </head>
 <body>
 
@@ -31,7 +31,6 @@
 			</div>
 		  </div>
 		</div>
-
 
 		<div id="post-list"></div>
 
