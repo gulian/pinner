@@ -63,19 +63,6 @@ exports.fetch = function(req, res){
 		return;
 	}
 
-	// var phantom = require('phantom');
-
-	// phantom.create(function(ph){
-	// 	ph.createPage(function(page){
-	// 		page.open(url_t ,function(){
-	// 		    var document = page.evaluate(function () {
-	// 		        return document;
-	// 		    });
-	// 		    console.log(document);
-	// 		});
-	// 	});
-	// });
-
 	var parsedUrl = url.parse(url_t) ;
 	var options = {
 		host: parsedUrl.hostname,
@@ -108,11 +95,14 @@ exports.fetch = function(req, res){
 			page_info.title = body.match(/<title>(.*?)<\/title>/i);
 
 			if(page_info.title)
-				page_info = page_info.title[1];
+				page_info.title = page_info.title[1];
 			else
-				page_info = '';
+				page_info.title = '';
+
+			console.log(page_info)
 
 			res.json(200, page_info);
+
 		});
 	}).on('error', function(e) {
 		console.log("Got error: " + e.message);
