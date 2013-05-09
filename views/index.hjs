@@ -14,6 +14,7 @@
 	<script src="/javascripts/vendor/masonry/masonry.js"></script>
 	<script src="/javascripts/vendor/timeago/moment.js"></script>
 	<script src="/javascripts/vendor/timeago/livestamp.js"></script>
+	<script src="/javascripts/vendor/mustache/mustache.js"></script>
 	<script src="/javascripts/app.js"></script>
  	<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
 </head>
@@ -28,14 +29,25 @@
 					<li><a href="" id="bookmarklet">Pinner Bookmarklet</a></li>
 					<li><button href="#addNewPinModel" role="button" id="new-post-btn" class="btn btn-inverse" data-toggle="modal">New pin</button></li>
 				</ul>
+				<form class="navbar-search pull-left" id="search-form">
+				  <input type="text" class="search-query" placeholder="Search">
+				</form>
 			</div>
 		  </div>
 		</div>
-
-		<div id="post-list"></div>
-
-
- 
+		<div id="main-container">
+			<div id="nav-search" class="navbar hide">
+			  <div class="navbar-inner">
+			    <a class="brand" href="#">Search results for "{{str}}"</a>
+			    <ul class="nav pull-right">
+			      <li class="active"><a href="#">Pins</a></li>
+			      <li><a href="#">Tables</a></li>
+			      <li><a href="#">Users</a></li>
+			    </ul>
+			  </div>
+			</div>
+			<div id="post-list"></div>
+		</div>
 		<div id="addNewPinModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewPinModelLabel" aria-hidden="true">
 			<div class="modal-header">
 				<button id="close-post-btn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

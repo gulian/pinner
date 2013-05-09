@@ -111,3 +111,17 @@ exports.fetch = function(req, res){
 
 };
 
+exports.search = function(req, res){
+	var url = require('url');
+	var searchStr = req.query.str;
+	console.log(searchStr)
+	var response = [];
+	database.find("posts", {'title' : {'$begin' : searchStr}}, function(errors, cursor, count){
+		if(errors) return res.send(500);
+
+		while (cursor.next()) {
+			response.push(cursor.object());
+		}
+		res.json(response);
+	});
+};

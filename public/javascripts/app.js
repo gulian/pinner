@@ -165,15 +165,18 @@ $(function(){
 			"click #new-post-rendered-tags span" : "tagClickHandler",
 			"click #remote-gallery img": "imageClickHandler",
 			"click #cancel-post-btn" : 'resetPostFields',
-			"click #close-post-btn" : 'resetPostFields'
+			"click #close-post-btn" : 'resetPostFields',
+			"submit #search-form" : 'search'
 		},
 
 		initialize: function(){
 			var self = this ;
+
 			this.posts = new PostList();
 			this.posts.fetch({success:function(){
 				self.render();
 			}});
+			this.templateSearch = $("#nav-search").html();
 		},
 
 		render: function(){
@@ -344,6 +347,20 @@ $(function(){
 		resetPostFields: function(){
 			$("#new-post-form input").val('');
 			$("#remote-gallery, #new-post-rendered-tags").empty();
+		},
+		search: function(){
+			var self = this ;
+			var PostListSearch = Backbone.Collection.extend({
+				model: Post,
+				url: "search?str="+$("#search-form input").val()
+			});
+			this.posts = new PostListSearch();
+			this.posts.fetch({success:function(){
+				self.render();
+			}});
+			var html = Mustache.to_html( this.templateSearch, {str: $("#search-form input").val()});
+			$("#nav-search").html(html).show();
+			return false;
 		}
 	});
 
