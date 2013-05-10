@@ -166,7 +166,9 @@ $(function(){
 			"click #remote-gallery img": "imageClickHandler",
 			"click #cancel-post-btn" : 'resetPostFields',
 			"click #close-post-btn" : 'resetPostFields',
-			"submit #search-form" : 'search'
+			"submit #search-form" : 'search',
+			"click #scroll-top" : 'scrollTopHandler',
+
 		},
 
 		initialize: function(){
@@ -177,6 +179,8 @@ $(function(){
 				self.render();
 			}});
 			this.templateSearch = $("#nav-search").html();
+			$(window).scroll(this.initScrollTop);
+
 		},
 
 		render: function(){
@@ -366,6 +370,22 @@ $(function(){
 			var html = Mustache.to_html( this.templateSearch, {str: $("#search-form input").val()});
 			$("#nav-search").html(html).show();
 			return false;
+		},
+		initScrollTop : function(){
+			var pos = $("#post-list").position();
+			var width = $("#post-list").outerWidth();
+			var widthElem = $("#scroll-top").outerWidth();
+			var wTop = $(document).scrollTop();
+			if (wTop == 0){
+				$("#scroll-top").slideUp();
+			} else {
+				$("#scroll-top").css("left", (pos.left + width - widthElem)).slideDown();
+			}
+
+		},
+		scrollTopHandler: function(){
+		  $("html, body").animate({ scrollTop: 0 });
+		  return false;
 		}
 	});
 

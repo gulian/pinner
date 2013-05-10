@@ -47,6 +47,7 @@
 			  </div>
 			</div>
 			<div id="post-list"></div>
+			<button id="scroll-top" class="btn hide">Scroll to top</button>
 		</div>
 		<div id="addNewPinModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewPinModelLabel" aria-hidden="true">
 			<div class="modal-header">
