@@ -99,29 +99,42 @@ exports.fetch = function(req, res){
 			else
 				page_info.title = '';
 
-			console.log(page_info)
-
 			res.json(200, page_info);
-
 		});
+
 	}).on('error', function(e) {
-		console.log("Got error: " + e.message);
+		console.log("HOLY CRAP: " + e.message);
 		res.json(404, []);
 	});
 
 };
 
 exports.search = function(req, res){
-	var url = require('url');
-	var searchStr = req.query.str;
-	console.log(searchStr)
-	var response = [];
-	database.find("posts", {'title' : {'$begin' : searchStr}}, function(errors, cursor, count){
-		if(errors) return res.send(500);
+	database.find("posts", function(errors, cursor){
+
+		if(errors)
+			return res.send(500);
+
+		var response	= [],
+			search_str	= req.query.str.trim().toLowerCase(),
+			pin, tags;
 
 		while (cursor.next()) {
-			response.push(cursor.object());
+			pin = cursor.object() ;
+
+			if( pin.title.trim().toLowerCase().indexOf(search_str) !== -1 ||
+				pin.link.trim().toLowerCase().indexOf(search_str) !== -1  ){
+				response.push(pin);
+			} else {
+				tags = pin.tags.split(',');
+				for (var i = 0; i < tags.length; i++) {
+					if(tags[i].trim().toLowerCase().indexOf(search_str) !== -1){
+						response.push(pin);
+						break;
+					}
+				}
+			}
 		}
-		res.json(response);
+		res.json(200, response);
 	});
 };

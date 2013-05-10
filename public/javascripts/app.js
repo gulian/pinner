@@ -51,18 +51,17 @@ $(function(){
 			this.$el.addClass("post thumbnail");
 			// TODO: use mustache.js template engine
 
-			var parser = document.createElement('a');
+			var parser	= document.createElement('a');
 			parser.href = this.model.get("link");
-			var link = parser.hostname || "/!\\ Invalid link !" ;
+			var link	= parser.hostname || "/!\\ Invalid link !",
 
-			var	html  = '<img class="post-img" src="'+this.model.get("img")+'"></img>';
+				html  = '<img class="post-img" src="'+this.model.get("img")+'"></img>';
 				html += '<div class="post-detail">';
 				html += '	<div class="btn-group pinner-control">';
 				html += '		<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
 				html += '		<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
 				html += '	</div>';
 				html += '	<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				// <a href="#" id="toto" data-toggle="tooltip" title="first tooltip">hover over me</a>
 				html += '	<div class="post-timestamp"><a href=# data-toggle="tooltip" class="count-tooltip" title="'+this.model.get("count")+'">Pinned <span data-livestamp="'+this.model.get("created")+'"></span></a></div>';
 				html +=	'	<p class="link"><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+link+'</a></p>';
 				html += '	<p class="pinner-tags">';
@@ -72,9 +71,10 @@ $(function(){
 				html += '	</p>';
 				html += '</div>';
 
-//('+this.model.get("count")+')
+			this.$el.html(html)
+					.find(".count-tooltip")
+						.tooltip({'placement': 'left'});
 
-			this.$el.html(html);
 			return this;
 		},
 
@@ -185,9 +185,7 @@ $(function(){
 			_.each(this.posts.models, function(post){
 				self.add_post(post);
 			});
-			// called each time, dirty but works
 			self.layout();
-			$(".count-tooltip").tooltip({'placement': 'left'});
 		},
 
 		create_post: function(event){
@@ -225,7 +223,6 @@ $(function(){
 		},
 
 		add_post : function(post){
-			// called each time, dirty but works
 			var postView = new PostView({model:post}),
 				self = this,
 				$el = postView.render().$el.find('img').load(function(){
@@ -349,10 +346,18 @@ $(function(){
 			$("#remote-gallery, #new-post-rendered-tags").empty();
 		},
 		search: function(){
-			var self = this ;
+			var self = this , search_str = $("#search-form input").val();
+
+			if(search_str.trim() === ""){
+				$("#nav-search").hide();
+				Pinner.initialize(); // UGLY
+				return false;
+			}
+
+			// Design problem
 			var PostListSearch = Backbone.Collection.extend({
 				model: Post,
-				url: "search?str="+$("#search-form input").val()
+				url: "search?str="+search_str
 			});
 			this.posts = new PostListSearch();
 			this.posts.fetch({success:function(){
@@ -372,6 +377,6 @@ $(function(){
 		// bookmarkletJS += "var app=document.createElement('script');app.setAttribute('src', '"+document.location.origin+"/javascripts/app.js');document.body.appendChild(app);";
 		bookmarkletJS += "}());";
 
-	$("#bookmarklet").attr('href',bookmarkletJS );
+	// $("#bookmarklet").attr('href',bookmarkletJS );
 
 });
