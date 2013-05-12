@@ -51,7 +51,10 @@ exports.fetch = function(req, res){
 
 	var url = require('url');
 	var url_t = req.query.url;
-	var isImage = url_t.match(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/gi)[1];
+	var isImage = url_t.match(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/gi);
+	if(isImage){
+		isImage = isImage[1];
+	}
 	var page_info = {};
 	var imgs = [];
 
