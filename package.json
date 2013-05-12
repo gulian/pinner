@@ -11,6 +11,7 @@
     "hjs": "*",
     "less-middleware": "*",
     "ejdb": "*", 
-    "mocha" : "*"
+    "mocha" : "*",
+    "request" : "*"
   }
 }

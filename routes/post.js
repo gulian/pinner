@@ -1,7 +1,6 @@
 var database = require("ejdb").open("pinner", require("ejdb").DEFAULT_OPEN_MODE),
 	fs = require('fs'),
-	http = require('http');
-	url = require('url');
+	http = require('http'),
 	path = require('path');
 
 
@@ -49,74 +48,56 @@ exports.delete = function(req, res){
 // TODO : move this function in a proper file
 exports.fetch = function(req, res){
 
-	var url = require('url');
-	var url_t = req.query.url;
-	var isImage = url_t.match(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/gi);
+	var request = require('request');
+	var parser = require('url');
+	var url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
+	var isImage = url.match(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/gi);
+
 	if(isImage){
 		isImage = isImage[1];
 	}
-	var page_info = {};
-	var imgs = [];
+
+	var page = {	'url'   : url,
+					'title' : undefined,
+					'imgs'  : [] };
 
 	if(isImage){
-		imgs.push(url_t);
-		page_info.imgs = imgs;
-		page_info.title = url_t;
-		res.json(200, page_info);
+		page.imgs.push(url);
+		res.json(200, page);
 		return;
 	}
 
-	var parsedUrl = url.parse(url_t) ;
-	var options = {
-		host: parsedUrl.hostname,
-		port: parsedUrl.port,
-		path: parsedUrl.path
-	};
+	request(url, function (error, response, body) {
+		if (error) {
+			console.log("Error while fetching document: " + error);
+			return res.json(500, {});
+		}
 
-	http.get(options, function(http_response) {
-		var body = "";
-		http_response.on('data', function (body_part) {
-			body += body_part;
-		});
-		http_response.on('end', function(){
+		page.title = body.match(/<title>(.*?)<\/title>/i);
 
-			page_info.title = body.match(/<title>(.*?)<\/title>/i);
+		if(page.title)
+			page.title = page.title[1];
+		else
+			page.title = '';
 
-			if(page_info.title)
-				page_info.title = page_info.title[1];
-			else
-				page_info.title = '';
+		var matches = body.match(/<img[^>]+src="([^">]+)"/gi),
+			parsed  = parser.parse(url) ;
 
-			var matches = body.match(/<img[^>]+src="([^">]+)"/gi);
-			if(!matches){
-				page_info.imgs = [];
-				res.json(200, page_info);
-				return ;
+		if(!matches)
+			return res.json(200, page);
+
+
+		for (var i = 0; i < matches.length; i++) {
+			var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
+
+			if(src && src[0].indexOf('http') !== -1){
+				page.imgs.push(src[0]);
 			}
-			for (var i = 0; i < matches.length; i++) {
-				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-
-				if(src && src[0].indexOf('http') !== -1){
-					imgs.push(src[0]);
-				}
-				else if(src){
-					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+'/'+src[0]);
-				}
+			else if(src){
+				page.imgs.push(parsed.protocol + '//' + parsed.host + '/' + src[0]);
 			}
-			page_info.imgs = imgs;
-			page_info.title = body.match(/<title>(.*?)<\/title>/i);
-
-			if(page_info.title)
-				page_info.title = page_info.title[1];
-			else
-				page_info.title = '';
-
-			res.json(200, page_info);
-		});
-
-	}).on('error', function(e) {
-		console.log("HOLY CRAP: " + e.message);
-		res.json(404, []);
+		}
+		res.json(200, page);
 	});
 
 };
