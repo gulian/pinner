@@ -79,9 +79,18 @@ exports.fetch = function(req, res){
 			body += body_part;
 		});
 		http_response.on('end', function(){
+
+			page_info.title = body.match(/<title>(.*?)<\/title>/i);
+
+			if(page_info.title)
+				page_info.title = page_info.title[1];
+			else
+				page_info.title = '';
+
 			var matches = body.match(/<img[^>]+src="([^">]+)"/gi);
 			if(!matches){
-				res.json(200, []);
+				page_info.imgs = [];
+				res.json(200, page_info);
 				return ;
 			}
 			for (var i = 0; i < matches.length; i++) {
@@ -91,7 +100,7 @@ exports.fetch = function(req, res){
 					imgs.push(src[0]);
 				}
 				else if(src){
-					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+src[0]);
+					imgs.push(parsedUrl.protocol+'//'+parsedUrl.host+'/'+src[0]);
 				}
 			}
 			page_info.imgs = imgs;
