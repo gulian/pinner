@@ -133,6 +133,13 @@ $(function(){
 		url: "post/"
 	});
 
+	var PostSearchList = Backbone.Collection.extend({
+		model: Post,
+		url: function(){
+			return new PostList().url+'search/?search=';
+		}
+	});
+
 	var PostCollection = new PostList();
 
 	var PinnerView = Backbone.View.extend({
@@ -158,7 +165,6 @@ $(function(){
 			this.posts.fetch({success:function(){
 				self.render();
 			}});
-			this.templateSearch = $("#nav-search").html();
 			$(window).scroll(this.initScrollTop);
 
 		},
@@ -338,25 +344,22 @@ $(function(){
 		},
 
 		search: function(){
-			var self = this , search_str = $("#search-form input").val();
+			var self   = this ,
+				search = $("#search-form input").val();
 
-			if(search_str.trim() === ""){
-				$("#nav-search").hide();
+			if(search.trim() === ""){
 				Pinner.initialize(); // UGLY
 				return false;
 			}
 
-			// Design problem
-			var PostListSearch = Backbone.Collection.extend({
-				model: Post,
-				url: "search?str="+search_str
-			});
-			this.posts = new PostListSearch();
-			this.posts.fetch({success:function(){
-				self.render();
+			var posts = new PostSearchList({search:search});
+
+			posts.fetch({data : {
+				search : search
+			}, success:function(){
+				console.log(posts);
 			}});
-			var html = Mustache.to_html( this.templateSearch, {str: $("#search-form input").val()});
-			$("#nav-search").html(html).show();
+
 			return false;
 		},
 

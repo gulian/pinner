@@ -109,7 +109,7 @@ exports.search = function(req, res){
 			return res.send(500);
 
 		var response	= [],
-			search_str	= req.query.str.trim().toLowerCase(),
+			search_str	= req.query.search.trim().toLowerCase(),
 			pin, tags;
 
 		while (cursor.next()) {

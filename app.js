@@ -25,8 +25,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 
-app.get( '/post', post.showAll);
-app.get('/search', post.search);
+app.get('/post', post.showAll);
+app.get('/post/search/', post.search);
 
 app.get( '/post/:id', post.showOne);
 app.put('/post/:id', post.update);
