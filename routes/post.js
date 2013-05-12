@@ -103,6 +103,7 @@ exports.fetch = function(req, res){
 };
 
 exports.search = function(req, res){
+
 	database.find("posts", function(errors, cursor){
 
 		if(errors)

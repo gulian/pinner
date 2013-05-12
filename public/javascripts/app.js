@@ -136,7 +136,7 @@ $(function(){
 	var PostSearchList = Backbone.Collection.extend({
 		model: Post,
 		url: function(){
-			return new PostList().url+'search/?search=';
+			return new PostList().url+'search/';
 		}
 	});
 
