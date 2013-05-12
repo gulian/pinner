@@ -11,7 +11,7 @@ $(function(){
 				_id     : undefined,
 				title   : 'Untitled pin',
 				link    : 'http://',
-				img		: 'http://placekitten.com/g/'+columnWidth+'/'+Math.floor(100*Math.random()%150+150),
+				img		: '',
 				tags    : '',
 				count   : 0,
 				created : 0
@@ -45,7 +45,7 @@ $(function(){
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.model.bind('change', this.render);
-            this.pinTemplate = _.template($("script#pin-template").html());
+			this.pinTemplate = _.template($("script#pin-template").html());
 		},
 
 		render: function(){
@@ -153,8 +153,7 @@ $(function(){
 			"click #cancel-post-btn" : 'resetPostFields',
 			"click #close-post-btn" : 'resetPostFields',
 			"submit #search-form" : 'search',
-			"click #scroll-top" : 'scrollTopHandler',
-
+			"click #scroll-top" : 'scrollTopHandler'
 		},
 
 		initialize: function(){
@@ -331,10 +330,12 @@ $(function(){
 				columnWidth: columnWidth
 			});
 		},
+
 		resetPostFields: function(){
 			$("#new-post-form input").val('');
 			$("#remote-gallery, #new-post-rendered-tags").empty();
 		},
+
 		search: function(){
 			var self = this , search_str = $("#search-form input").val();
 
@@ -357,32 +358,33 @@ $(function(){
 			$("#nav-search").html(html).show();
 			return false;
 		},
+
 		initScrollTop : function(){
 			var pos = $("#post-list").position();
 			var width = $("#post-list").outerWidth();
 			var widthElem = $("#scroll-top").outerWidth();
 			var wTop = $(document).scrollTop();
-			if (wTop == 0){
+			if (wTop === 0){
 				$("#scroll-top").slideUp();
 			} else {
 				$("#scroll-top").css("left", (pos.left + width - widthElem)).slideDown();
 			}
 
 		},
+
 		scrollTopHandler: function(){
-		  $("html, body").animate({ scrollTop: 0 });
-		  return false;
+			$("html, body").animate({ scrollTop: 0 });
+			return false;
 		}
 	});
 
 	var Pinner = new PinnerView();
 
-	var bookmarkletJS  = "javascript:(function(){";
-		bookmarkletJS += "var js=document.createElement('script');js.setAttribute('src', '"+document.location.origin+"/javascripts/bookmarklet.js');document.body.appendChild(js);";
-		bookmarkletJS += "var app=document.createElement('link');app.setAttribute('rel', 'stylesheet');app.setAttribute('href', '"+document.location.origin+"/stylesheets/style.css');document.body.appendChild(app);";
-		// bookmarkletJS += "var app=document.createElement('script');app.setAttribute('src', '"+document.location.origin+"/javascripts/app.js');document.body.appendChild(app);";
-		bookmarkletJS += "}());";
-
+	// var bookmarkletJS  = "javascript:(function(){";
+	//	bookmarkletJS += "var js=document.createElement('script');js.setAttribute('src', '"+document.location.origin+"/javascripts/bookmarklet.js');document.body.appendChild(js);";
+	//	bookmarkletJS += "var app=document.createElement('link');app.setAttribute('rel', 'stylesheet');app.setAttribute('href', '"+document.location.origin+"/stylesheets/style.css');document.body.appendChild(app);";
+	//	// bookmarkletJS += "var app=document.createElement('script');app.setAttribute('src', '"+document.location.origin+"/javascripts/app.js');document.body.appendChild(app);";
+	//	bookmarkletJS += "}());";
 	// $("#bookmarklet").attr('href',bookmarkletJS );
 
 });
