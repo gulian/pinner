@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>{{ title }}</title>
+	<title>Pinner</title>
 	
 	<link rel="stylesheet" href="/stylesheets/bootstrap.css">
 	<link rel="stylesheet" href="/stylesheets/style.css">
@@ -14,9 +14,10 @@
 	<script src="/javascripts/vendor/masonry/masonry.js"></script>
 	<script src="/javascripts/vendor/timeago/moment.js"></script>
 	<script src="/javascripts/vendor/timeago/livestamp.js"></script>
-	<script src="/javascripts/vendor/mustache/mustache.js"></script>
 	<script src="/javascripts/app.js"></script>
  	<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+
+ 	<link id="favicon" rel="icon" type="image/png" href="favicon.png" /> 
 </head>
 <body>
      <script type="text/template" id="pin-template">
@@ -50,9 +51,11 @@
 			  <a class="brand" href="#">Pinner</a>
 				<ul class="nav pull-right">
 					<!-- <li><a href="" id="bookmarklet">Pinner Bookmarklet</a></li> -->
-					<li><form class="navbar-search" id="search-form">
-				  <input type="text" class="search-query" placeholder="Search">
-				</form></li>
+					<li>
+						<form class="navbar-search" id="search-form">
+				  			<input type="text" class="search-query" placeholder="Search">
+						</form>
+					</li>
 					<li><button href="#addNewPinModel" role="button" id="new-post-btn" class="btn btn-inverse" data-toggle="modal">New pin</button></li>
 				</ul>
 				
