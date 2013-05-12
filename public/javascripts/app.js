@@ -45,6 +45,7 @@ $(function(){
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.model.bind('change', this.render);
+            this.pinTemplate = _.template($("script#pin-template").html());
 		},
 
 		render: function(){
@@ -53,23 +54,10 @@ $(function(){
 
 			var parser	= document.createElement('a');
 			parser.href = this.model.get("link");
-			var link	= parser.hostname || "/!\\ Invalid link !",
 
-				html  = '<img class="post-img" src="'+this.model.get("img")+'"></img>';
-				html += '<div class="post-detail">';
-				html += '	<div class="btn-group pinner-control">';
-				html += '		<button class="btn btn-mini toggle-edit-btn"><i class="icon-pencil"></i></button>';
-				html += '		<button class="btn btn-mini delete-btn"><i class="icon-remove"></i></button>';
-				html += '	</div>';
-				html += '	<h3 for=title class=editable>'+this.model.get("title")+'</h3>';
-				html += '	<div class="post-timestamp"><a href=# data-toggle="tooltip" class="count-tooltip" title="'+this.model.get("count")+'">Pinned <span data-livestamp="'+this.model.get("created")+'"></span></a></div>';
-				html +=	'	<p class="link"><a class="editable post-link" for="link" target="_blank" href="'+this.model.get("link")+'">'+link+'</a></p>';
-				html += '	<p class="pinner-tags">';
-				if(this.model.get("tags") !== '') _.each(this.model.get("tags").split(','), function(tag){
-					html +='	<span class="label pinner-tag">'+tag+'</span>';
-				});
-				html += '	</p>';
-				html += '</div>';
+            // Templating magic TODO the template shouldn't be retemplated every render.
+            var context = this.buildPinContext(this.model);
+            var html = this.pinTemplate(context);
 
 			this.$el.html(html)
 					.find(".count-tooltip")
@@ -77,6 +65,28 @@ $(function(){
 
 			return this;
 		},
+
+        /**
+         * Builds the mustache context for the provided model entity.
+         * @param model the pin entity
+         * @return JSON the context for mustache to render the pin.
+         */
+        buildPinContext: function(model) {
+            var context = {
+                pin_img_src: this.model.get("img"),
+                pin_title: this.model.get("title"),
+                pin_count: this.model.get("count"),
+                pin_link: this.model.get("link"),
+                pin_created: this.model.get("created") 
+            };
+            context['tags'] = [];
+            if (this.model.get("tags") != "") {
+                _.each(this.model.get("tags").split(','), function (tag) {
+                    context['tags'].push(tag);
+                });
+            }
+            return context;
+        },
 
 		confirmDelete: function(event){
 			var $btn = $(event.currentTarget);
