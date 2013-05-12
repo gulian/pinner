@@ -70,7 +70,7 @@ exports.fetch = function(req, res){
 	request(url, function (error, response, body) {
 		if (error) {
 			console.log("Error while fetching document: " + error);
-			return res.json(500, {});
+			return res.json(404);
 		}
 
 		page.title = body.match(/<title>(.*?)<\/title>/i);

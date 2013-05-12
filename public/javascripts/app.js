@@ -12,7 +12,7 @@ $(function(){
 				title   : 'Untitled pin',
 				link    : 'http://',
 				img		: undefined,
-				tags    : '',
+				tags    : undefined,
 				count   : 0,
 				created : 0
 			};
@@ -88,7 +88,7 @@ $(function(){
 
 			var parser = document.createElement('a');
 			parser.href = this.model.get("link");
-			var link = parser.hostname || "/!\\ Invalid link !" ;
+			var link = parser.hostname || "link unreachable or invalid" ;
 
 			this.$el.find('.editable')
 						.each(function(key, attribute){
@@ -152,8 +152,8 @@ $(function(){
 			"blur #new-post-link" : 'linkHandler',
 			"click #new-post-rendered-tags span" : "tagClickHandler",
 			"click #remote-gallery img": "imageClickHandler",
-			"click #cancel-post-btn" : 'resetPostFields',
-			"click #close-post-btn" : 'resetPostFields',
+			"click #cancel-post-btn" : 'resetform',
+			"click #close-post-btn" : 'resetform',
 			"submit #search-form" : 'search',
 			"click #scroll-top" : 'scrollTopHandler'
 		},
@@ -227,7 +227,7 @@ $(function(){
 			else
 				self.layout();
 
-			this.resetPostFields();
+			this.resetform();
 		},
 
 		tagsHandler:function(event){
@@ -250,10 +250,10 @@ $(function(){
 				return;
 			}
 
-			var $input = $("#new-post-link"),
-				link = $input.val(),
+			var $link_input = $("#new-post-link"),
+				link = $link_input.val(),
 				isUrl = link.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi),
-				$title_input = $('input[name=title]').attr('disabled',true),
+				$title_input = $('input[name=title]'),
 				$gallery = $("#remote-gallery").empty();
 
 			if(isUrl){
@@ -268,17 +268,14 @@ $(function(){
 				$.ajax({
 					url : '/fetch',
 					data: {
-						url : $input.val()
+						url : $link_input.val()
 					},
-					success : function(page_info){
-						var urls = page_info.imgs || [];
-						if($title_input.val().trim() === "") {
-							$title_input.val(page_info.title);
-							$("#new-post-tags").focus();
-						} else {
-							$title_input.focus();
-						}
-						$title_input.attr('disabled',false);
+					success : function(page){
+						var urls = page.imgs || [];
+
+						$link_input.val(page.url);
+						$title_input.val(page.title).focus();
+
 						$gallery = $gallery.empty();
 						_.each(urls, function(url){
 							var $img = $("<img>").attr({'src': url});
@@ -289,7 +286,7 @@ $(function(){
 						if(urls.length === 0){
 							$("<div>")
 									.addClass('alert no-image-alert')
-									.html("<strong>CRAP</strong> No picture was found on this url")
+									.html("<strong>Sorry</strong> this page seems to be imageless !")
 									.appendTo($gallery);
 						} else {
 							var $firstImg = $("#remote-gallery span").first();
@@ -302,13 +299,14 @@ $(function(){
 						if(xhr.status === 404){
 							message = "this URL seems to be unreachable";
 						} else {
-							message = "something very bad just happened";
+							message = "something very bad just happened, you broke Pinner !";
 						}
-						$title_input.attr('disabled',false);
 						$("#link-input-control-group").addClass("error");
-						var $alert = $("<div>").addClass('alert alert-error no-image-alert')
-													.html("<strong>OOPS</strong> "+message)
-													.appendTo($gallery.empty());
+
+						$("<div>")
+								.addClass('alert alert-error no-image-alert')
+								.html("<strong>Erg..</strong> "+message)
+								.appendTo($gallery.empty());
 					}
 				});
 			} else {
@@ -338,16 +336,16 @@ $(function(){
 			});
 		},
 
-		resetPostFields: function(){
+		resetform: function(){
 			$("#new-post-form input").val('');
 			$("#remote-gallery, #new-post-rendered-tags").empty();
 		},
 
 		search: function(){
 			var self   = this ,
-				search = $("#search-form input").val();
+				search = $("#search-form input").val().trim();
 
-			if(search.trim() === ""){
+			if(search === ""){
 				Pinner.initialize(); // UGLY
 				return false;
 			}
@@ -367,13 +365,12 @@ $(function(){
 			var pos = $("#post-list").position();
 			var width = $("#post-list").outerWidth();
 			var widthElem = $("#scroll-top").outerWidth();
-			var wTop = $(document).scrollTop();
-			if (wTop === 0){
+
+			if ($(document).scrollTop() === 0){
 				$("#scroll-top").slideUp();
 			} else {
 				$("#scroll-top").css("left", (pos.left + width - widthElem)).slideDown();
 			}
-
 		},
 
 		scrollTopHandler: function(){
