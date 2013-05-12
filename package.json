@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "start": "node app", 
-    "test" : "node_modules/mocha/bin/mocha"
+    "test" : "node_modules/mocha/bin/mocha -R spec test/"
   },
   "dependencies": {
     "express": "3.1.0",
