@@ -4,6 +4,10 @@
 
 @column-width : 218px;
 
+#search-form{
+	margin-right: 5px;
+}
+
 .post{
 	
 	max-width: @column-width + 18;
@@ -33,6 +37,12 @@
 		outline:none;
 	}
 
+	.post-header{
+		height: 38px;
+		background-color: rgb(65, 65, 65);
+		border-radius: 3px 3px 0px 0px;
+	}
+
 	.post-link{
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -50,6 +60,7 @@
 
 	.post-detail{
 		padding:10px;
+		background-color:white;
 	}
 
 	.post-timestamp{

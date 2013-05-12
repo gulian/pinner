@@ -11,7 +11,7 @@ $(function(){
 				_id     : undefined,
 				title   : 'Untitled pin',
 				link    : 'http://',
-				img		: 'http://placekitten.com/g/'+columnWidth+'/'+Math.floor(100*Math.random()%150+150),
+				img		: '',
 				tags    : '',
 				count   : 0,
 				created : 0
@@ -45,19 +45,17 @@ $(function(){
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.model.bind('change', this.render);
-            this.pinTemplate = _.template($("script#pin-template").html());
+			this.pinTemplate = _.template($("script#pin-template").html());
 		},
 
 		render: function(){
 			this.$el.addClass("post thumbnail");
-			// TODO: use mustache.js template engine
-
 			var parser	= document.createElement('a');
 			parser.href = this.model.get("link");
 
-            // Templating magic TODO the template shouldn't be retemplated every render.
-            var context = this.buildPinContext(this.model);
-            var html = this.pinTemplate(context);
+			// Templating magic TODO the template shouldn't be retemplated every render.
+			var context = this.buildPinContext(this.model);
+			var html = this.pinTemplate(context);
 
 			this.$el.html(html)
 					.find(".count-tooltip")
@@ -66,27 +64,27 @@ $(function(){
 			return this;
 		},
 
-        /**
-         * Builds the mustache context for the provided model entity.
-         * @param model the pin entity
-         * @return JSON the context for mustache to render the pin.
-         */
-        buildPinContext: function(model) {
-            var context = {
-                pin_img_src: this.model.get("img"),
-                pin_title: this.model.get("title"),
-                pin_count: this.model.get("count"),
-                pin_link: this.model.get("link"),
-                pin_created: this.model.get("created") 
-            };
-            context['tags'] = [];
-            if (this.model.get("tags") != "") {
-                _.each(this.model.get("tags").split(','), function (tag) {
-                    context['tags'].push(tag);
-                });
-            }
-            return context;
-        },
+		/**
+		 * Builds the mustache context for the provided model entity.
+		 * @param model the pin entity
+		 * @return JSON the context for mustache to render the pin.
+		 */
+		buildPinContext: function(model) {
+			var context = {
+				pin_img_src: this.model.get("img"),
+				pin_title: this.model.get("title"),
+				pin_count: this.model.get("count"),
+				pin_link: this.model.get("link"),
+				pin_created: this.model.get("created") 
+			};
+			context['tags'] = [];
+			if (this.model.get("tags") != "") {
+				_.each(this.model.get("tags").split(','), function (tag) {
+					context['tags'].push(tag);
+				});
+			}
+			return context;
+		},
 
 		confirmDelete: function(event){
 			var $btn = $(event.currentTarget);
@@ -177,8 +175,7 @@ $(function(){
 			"click #cancel-post-btn" : 'resetPostFields',
 			"click #close-post-btn" : 'resetPostFields',
 			"submit #search-form" : 'search',
-			"click #scroll-top" : 'scrollTopHandler',
-
+			"click #scroll-top" : 'scrollTopHandler'
 		},
 
 		initialize: function(){
@@ -355,10 +352,12 @@ $(function(){
 				columnWidth: columnWidth
 			});
 		},
+
 		resetPostFields: function(){
 			$("#new-post-form input").val('');
 			$("#remote-gallery, #new-post-rendered-tags").empty();
 		},
+
 		search: function(){
 			var self = this , search_str = $("#search-form input").val();
 
@@ -381,32 +380,33 @@ $(function(){
 			$("#nav-search").html(html).show();
 			return false;
 		},
+
 		initScrollTop : function(){
 			var pos = $("#post-list").position();
 			var width = $("#post-list").outerWidth();
 			var widthElem = $("#scroll-top").outerWidth();
 			var wTop = $(document).scrollTop();
-			if (wTop == 0){
+			if (wTop === 0){
 				$("#scroll-top").slideUp();
 			} else {
 				$("#scroll-top").css("left", (pos.left + width - widthElem)).slideDown();
 			}
 
 		},
+
 		scrollTopHandler: function(){
-		  $("html, body").animate({ scrollTop: 0 });
-		  return false;
+			$("html, body").animate({ scrollTop: 0 });
+			return false;
 		}
 	});
 
 	var Pinner = new PinnerView();
 
-	var bookmarkletJS  = "javascript:(function(){";
-		bookmarkletJS += "var js=document.createElement('script');js.setAttribute('src', '"+document.location.origin+"/javascripts/bookmarklet.js');document.body.appendChild(js);";
-		bookmarkletJS += "var app=document.createElement('link');app.setAttribute('rel', 'stylesheet');app.setAttribute('href', '"+document.location.origin+"/stylesheets/style.css');document.body.appendChild(app);";
-		// bookmarkletJS += "var app=document.createElement('script');app.setAttribute('src', '"+document.location.origin+"/javascripts/app.js');document.body.appendChild(app);";
-		bookmarkletJS += "}());";
-
+	// var bookmarkletJS  = "javascript:(function(){";
+	//	bookmarkletJS += "var js=document.createElement('script');js.setAttribute('src', '"+document.location.origin+"/javascripts/bookmarklet.js');document.body.appendChild(js);";
+	//	bookmarkletJS += "var app=document.createElement('link');app.setAttribute('rel', 'stylesheet');app.setAttribute('href', '"+document.location.origin+"/stylesheets/style.css');document.body.appendChild(app);";
+	//	// bookmarkletJS += "var app=document.createElement('script');app.setAttribute('src', '"+document.location.origin+"/javascripts/app.js');document.body.appendChild(app);";
+	//	bookmarkletJS += "}());";
 	// $("#bookmarklet").attr('href',bookmarkletJS );
 
 });
