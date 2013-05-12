@@ -11,7 +11,7 @@ $(function(){
 				_id     : undefined,
 				title   : 'Untitled pin',
 				link    : 'http://',
-				img		: '',
+				img		: undefined,
 				tags    : '',
 				count   : 0,
 				created : 0
@@ -20,13 +20,8 @@ $(function(){
 
 		urlRoot: 'post/',
 
-		idAttribute: "_id",
+		idAttribute: "_id"
 
-		debug: function(){
-			console.log('_id:'      , this.get('_id')      );
-			console.log('title:'    , this.get('title')    );
-			console.log('link:'		, this.get('link')     );
-		}
 	});
 
 	var PostView = Backbone.View.extend({
@@ -42,10 +37,11 @@ $(function(){
 			"click .post-link" : "linkClickHandler"
 		},
 
+		template: _.template($("script#pin-template").html()),
+
 		initialize: function(){
 			_.bindAll(this, "render");
 			this.model.bind('change', this.render);
-			this.pinTemplate = _.template($("script#pin-template").html());
 		},
 
 		render: function(){
@@ -54,8 +50,7 @@ $(function(){
 			var parser	= document.createElement('a');
 			parser.href = this.model.get("link");
 
-            // Templating magic TODO the template shouldn't be retemplated every render.
-            var html = this.pinTemplate(this.model.attributes);
+            var html = this.template(this.model.attributes);
 
 			this.$el.html(html)
 					.find(".count-tooltip")
@@ -214,12 +209,18 @@ $(function(){
 		add_post : function(post){
 			var postView = new PostView({model:post}),
 				self = this,
-				$el = postView.render().$el.find('img').load(function(){
-					self.layout();
-				}).end();
+				$el = postView.render().$el;
 
 			this.$el.find("#post-list").prepend($el);
 			this.posts.add(post);
+
+			if(post.get('img'))
+				$el.find('img').load(function(){
+					self.layout();
+				});
+			else
+				self.layout();
+
 			this.resetPostFields();
 		},
 

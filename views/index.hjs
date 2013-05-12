@@ -20,7 +20,7 @@
 </head>
 <body>
      <script type="text/template" id="pin-template">
-        <% if(img !== '') {%>
+        <% if(img) {%>
         	<img class="post-img" src="<%= img %>">
         <% } else {%>
         	<div class='post-header'></div>	
