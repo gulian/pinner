@@ -12,7 +12,7 @@ $(function(){
 				title   : 'Untitled pin',
 				link    : 'http://',
 				img		: undefined,
-				tags    : undefined,
+				tags    : '',
 				count   : 0,
 				created : 0
 			};
