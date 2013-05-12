@@ -50,14 +50,12 @@ $(function(){
 
 		render: function(){
 			this.$el.addClass("post thumbnail");
-			// TODO: use mustache.js template engine
 
 			var parser	= document.createElement('a');
 			parser.href = this.model.get("link");
 
             // Templating magic TODO the template shouldn't be retemplated every render.
-            var context = this.buildPinContext(this.model);
-            var html = this.pinTemplate(context);
+            var html = this.pinTemplate(this.model.attributes);
 
 			this.$el.html(html)
 					.find(".count-tooltip")
@@ -65,28 +63,6 @@ $(function(){
 
 			return this;
 		},
-
-        /**
-         * Builds the mustache context for the provided model entity.
-         * @param model the pin entity
-         * @return JSON the context for mustache to render the pin.
-         */
-        buildPinContext: function(model) {
-            var context = {
-                pin_img_src: this.model.get("img"),
-                pin_title: this.model.get("title"),
-                pin_count: this.model.get("count"),
-                pin_link: this.model.get("link"),
-                pin_created: this.model.get("created") 
-            };
-            context['tags'] = [];
-            if (this.model.get("tags") != "") {
-                _.each(this.model.get("tags").split(','), function (tag) {
-                    context['tags'].push(tag);
-                });
-            }
-            return context;
-        },
 
 		confirmDelete: function(event){
 			var $btn = $(event.currentTarget);
