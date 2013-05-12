@@ -24,7 +24,7 @@
 		<div class="navbar navbar-fixed-top">
 		  <div class="navbar-inner">
 			<div class="container">
-			  <a class="brand" href="#">Pinner</a>
+			  <a class="brand" href="#">Pinner-cd</a>
 				<ul class="nav pull-right">
 					<!-- <li><a href="" id="bookmarklet">Pinner Bookmarklet</a></li> -->
 					<li><button href="#addNewPinModel" role="button" id="new-post-btn" class="btn btn-inverse" data-toggle="modal">New pin</button></li>
