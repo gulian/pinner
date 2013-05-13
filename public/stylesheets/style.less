@@ -107,48 +107,50 @@
 }
 
 #remote-gallery {
+	
 	width: 235px;
 	max-height: 280px;
 	margin-top : 20px;
 	float: right;
-	& span {
+	
+	span:hover{
+		border-color: #0088cc;
+		-webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+		   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+			    box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+	}
 
-	transition-duration: 0.4s;
-	transition-property: height,width;
-	-webkit-transition-duration: 0.4s;
-	-webkit-transition-property: height,width;
+	span.selected {
 
-		&:hover{
-			border-color: #0088cc;
-			-webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-			-moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-			box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-		}
+		border-color: red;
+		-webkit-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+		   -moz-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+		        box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
+	}
 
-		&.selected {
+	span.little-thumbnail {
 
-			& img{
-
-			}
-
-			border-color: red;
-			-webkit-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
-			   -moz-box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
-			        box-shadow: 0 1px 4px rgba(233, 5, 4, 0.25);
-		}
-
+		transition-duration: 0.4s;
+		transition-property: height,width;
+		-webkit-transition-duration: 0.4s;
+		-webkit-transition-property: height,width;
 		cursor:pointer;
-		margin : 2px;
+		margin : 5px 0 0 5px;
 		display: block;
 		width : 100px;
 		height : 100px;
 		float: left;
 		min-height: 100px;
+		
 		& img{
 			width : 100px;
 			clip: rect(0px, 100px, 100px, 0px);
 			position: absolute;
 		}
+	}
+
+	.preview{
+
 	}
 }
 
@@ -157,6 +159,7 @@
 		cursor: pointer;
 	}
 }
+
 #new-post-form{
 	float:left;
 	::-webkit-input-placeholder { 

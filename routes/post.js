@@ -98,8 +98,35 @@ exports.fetch = function(req, res){
 			}
 		}
 		res.json(200, page);
+
+
+
 	});
 
+};
+
+exports.preview = function(req, res){
+
+	var webshot = require('webshot');
+	var _slugify_strip_re = /[^\w\s-]/g;
+	var _slugify_hyphenate_re = /[-\s]+/g;
+	var url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
+
+	function slugify(s) {
+		s = s.replace(_slugify_strip_re, '').trim().toLowerCase();
+		s = s.replace(_slugify_hyphenate_re, '-');
+		return s;
+	}
+
+	var filename = slugify(url)+'.png';
+
+	// TODO : do it my self (without webshot dependance)
+	webshot(url , 'public/img/previews/'+filename, function(error) {
+		if(error)
+			return res.json(500);
+		else
+			return res.json(200, filename);
+	});
 };
 
 exports.search = function(req, res){

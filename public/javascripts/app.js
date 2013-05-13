@@ -259,28 +259,67 @@ $(function(){
 			if(isUrl){
 				$("#link-input-control-group").removeClass("error");
 
-				var $alert = $("<div>")
-									.addClass('alert alert-info no-image-alert ')
-									.html("We are looking for images in your link ...")
-									.appendTo($("#remote-gallery")
-									.empty());
+				$("<div>")
+					.addClass('alert alert-info no-image-alert ')
+					.html("We are looking for images in your link ...")
+					.appendTo($("#remote-gallery"));
 
-				$.ajax({
+				this.fetchImgFromUrl($link_input.val());
+
+			} else {
+				$("#link-input-control-group")
+						.addClass("error");
+				$("<div>")
+						.addClass('alert alert-error no-image-alert')
+						.html("<strong>Error</strong> url is not valid")
+						.appendTo($("#remote-gallery").empty());
+			}
+		},
+
+		fetchImgFromUrl: function(url){
+
+			var $gallery = $("#remote-gallery").empty();
+
+			var $img  = $("<img>").attr({'src': 'http://placehold.it/1024x758'});
+			var $span = $('<span>').html($img).addClass('thumbnail preview').appendTo($gallery);
+
+			$gallery.prepend($span);
+
+			$.ajax({
+				url : '/preview',
+				data: {
+					url : url
+				},
+				success : function(url){
+
+					if(!url)
+						return ;
+
+					$img.attr({'src': 'img/previews/'+url});
+
+					// auto select if no selection 
+
+					// $gallery.prepend($span); // empty if there is no img in there
+
+				}
+			});
+
+			$.ajax({
 					url : '/fetch',
 					data: {
-						url : $link_input.val()
+						url : url
 					},
 					success : function(page){
 						var urls = page.imgs || [];
 
-						$link_input.val(page.url);
-						$title_input.val(page.title).focus();
+						$("#new-post-link").val(page.url);
+						$('input[name=title]').val(page.title).focus();
 
-						$gallery = $gallery.empty();
+
 						_.each(urls, function(url){
 							var $img = $("<img>").attr({'src': url});
 							// TODO: use masonry to layout remote galery ??
-							$('<span>').html($img).addClass('thumbnail').appendTo($gallery);
+							$('<span>').html($img).addClass('thumbnail little-thumbnail').appendTo($gallery);
 						});
 
 						if(urls.length === 0){
@@ -288,11 +327,12 @@ $(function(){
 									.addClass('alert no-image-alert')
 									.html("<strong>Sorry</strong> this page seems to be imageless !")
 									.appendTo($gallery);
-						} else {
-							var $firstImg = $("#remote-gallery span").first();
-							$firstImg.addClass('selected');
-							$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
 						}
+						// else {
+						//		var $firstImg = $("#remote-gallery span").first();
+						//		$firstImg.addClass('selected');
+						//		$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
+						// }
 					},
 					error : function(xhr){
 						var message;
@@ -309,14 +349,6 @@ $(function(){
 								.appendTo($gallery.empty());
 					}
 				});
-			} else {
-				$("#link-input-control-group")
-						.addClass("error");
-				$("<div>")
-						.addClass('alert alert-error no-image-alert')
-						.html("<strong>Error</strong> url is not valid")
-						.appendTo($("#remote-gallery").empty());
-			}
 		},
 
 		tagClickHandler: function(event){

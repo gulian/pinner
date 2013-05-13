@@ -12,6 +12,7 @@
     "less-middleware": "*",
     "ejdb": "*", 
     "mocha" : "*",
-    "request" : "*"
+    "request" : "*",
+    "webshot" : "*"
   }
 }
