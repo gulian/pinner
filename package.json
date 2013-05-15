@@ -13,6 +13,6 @@
     "ejdb": "*", 
     "mocha" : "*",
     "request" : "*",
-    "webshot" : "*"
+    "phantomjs" : "*"
   }
 }

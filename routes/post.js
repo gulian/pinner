@@ -101,14 +101,26 @@ exports.fetch = function(req, res){
 
 		var public_url = 'img/previews/'+filename ;
 
-		webshot(url , 'public/'+public_url, function(error) {
-			if(error)
-				return res.json(200, page);
+		var phantom = require('phantom');
 
-			page.imgs.unshift(public_url);
-			res.json(200, page);
+		phantom.create(function(ph) {
+			ph.createPage(function(page_) {
+				phantom.clipRect = { top: 0 ,left: 0, width: 1024, height: 768 };
+				phantom.viewportSize = { width: 1024, height: 768 };
+				page_.open(url, function(status) {
+					if(status === "success"){
+						page_.render('public/'+public_url);
+						page.imgs.unshift(public_url);
+					}
+					res.json(200, page);
+				});
+			});
 		});
+
+
+
 	});
+
 };
 
 exports.preview = function(req, res){
