@@ -280,36 +280,14 @@ $(function(){
 
 			var $gallery = $("#remote-gallery").empty();
 
-			var $img  = $("<img>").attr({'src': 'http://placehold.it/1024x758'});
-			var $span = $('<span>').html($img).addClass('thumbnail preview').appendTo($gallery);
-
-			$gallery.prepend($span);
-
-			$.ajax({
-				url : '/preview',
-				data: {
-					url : url
-				},
-				success : function(url){
-
-					if(!url)
-						return ;
-
-					$img.attr({'src': 'img/previews/'+url});
-
-					// auto select if no selection 
-
-					// $gallery.prepend($span); // empty if there is no img in there
-
-				}
-			});
+			$("#link-input-control-group .input-prepend").addClass('working');
 
 			$.ajax({
 					url : '/fetch',
-					data: {
-						url : url
-					},
+					data: { url : url },
 					success : function(page){
+						$("#link-input-control-group .input-prepend").removeClass('working');
+
 						var urls = page.imgs || [];
 
 						$("#new-post-link").val(page.url);
@@ -328,13 +306,10 @@ $(function(){
 									.html("<strong>Sorry</strong> this page seems to be imageless !")
 									.appendTo($gallery);
 						}
-						// else {
-						//		var $firstImg = $("#remote-gallery span").first();
-						//		$firstImg.addClass('selected');
-						//		$('#new-post-hidden-img').val($firstImg.find('img').attr('src'));
-						// }
 					},
+
 					error : function(xhr){
+						$("#link-input-control-group .input-prepend").removeClass('working');
 						var message;
 						if(xhr.status === 404){
 							message = "this URL seems to be unreachable";

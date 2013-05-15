@@ -74,11 +74,7 @@ exports.fetch = function(req, res){
 		}
 
 		page.title = body.match(/<title>(.*?)<\/title>/i);
-
-		if(page.title)
-			page.title = page.title[1];
-		else
-			page.title = '';
+		page.title = page.title ? page.title[1] : '';
 
 		var matches = body.match(/<img[^>]+src="([^">]+)"/gi),
 			parsed  = parser.parse(url) ;
@@ -86,42 +82,46 @@ exports.fetch = function(req, res){
 		if(!matches)
 			return res.json(200, page);
 
-
 		for (var i = 0; i < matches.length; i++) {
 			var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
 
-			if(src && src[0].indexOf('http') !== -1){
+			if(src && ( src[0].indexOf('http') !== -1 || src[0].indexOf('https') !== -1) ){
 				page.imgs.push(src[0]);
-			}
-			else if(src){
-				page.imgs.push(parsed.protocol + '//' + parsed.host + '/' + src[0]);
+			} else if(src){
+				page.imgs.push(parsed.protocol + '//' + parsed.host + src[0]);
 			}
 		}
-		res.json(200, page);
 
+		var webshot = require('webshot');
 
+		url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
 
+		var filename  = url.replace(/[^\w\s-]/g, '').trim().toLowerCase().replace( /[-\s]+/g, '-');
+			filename += '.png';
+
+		var public_url = 'img/previews/'+filename ;
+
+		webshot(url , 'public/'+public_url, function(error) {
+			if(error)
+				return res.json(200, page);
+
+			page.imgs.unshift(public_url);
+			res.json(200, page);
+		});
 	});
-
 };
 
 exports.preview = function(req, res){
 
 	var webshot = require('webshot');
-	var _slugify_strip_re = /[^\w\s-]/g;
-	var _slugify_hyphenate_re = /[-\s]+/g;
 	var url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
 
-	function slugify(s) {
-		s = s.replace(_slugify_strip_re, '').trim().toLowerCase();
-		s = s.replace(_slugify_hyphenate_re, '-');
-		return s;
-	}
+	var filename  = url.replace(/[^\w\s-]/g, '').trim().toLowerCase().replace( /[-\s]+/g, '-');
+		filename += '.png';
 
-	var filename = slugify(url)+'.png';
+	var public_url = 'img/previews/'+filename ;
 
-	// TODO : do it my self (without webshot dependance)
-	webshot(url , 'public/img/previews/'+filename, function(error) {
+	webshot(url , 'public/'+public_url, function(error) {
 		if(error)
 			return res.json(500);
 		else
