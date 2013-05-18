@@ -1,8 +1,19 @@
+body {
+
+    background-color: rgb(243, 243, 243);
+
+}
+
 #main-container{
-	margin-top: 50px; 
+	padding-top: 42px;
+	-webkit-transform: translate3d(0, 0, 0);
+	   -moz-transform: translate3d(0, 0, 0);
+		-ms-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0); 
 }
 
 @column-width : 218px;
+@post-width: 200px;
 
 #search-form{
 	margin-right: 5px;
@@ -28,72 +39,87 @@
     -webkit-animation: pulse 1.5s infinite ease-in-out;
 }
 
+#post-list{
+	// position: relative;
+}
+
 .post{
 	
-	max-width: @column-width + 18;
-	min-width: @column-width + 18;
-  	margin: 10px;
-  	padding: 0;
-	box-sizing:border-box;
+	width 		: @post-width;
+  	margin 		: 10px;
+  	padding 	: 0;
+	position: relative;
+	float : left;
+	cursor: pointer;
 
-	transition-duration: 0.4s;
-	transition-property: left, right, top;
-	-webkit-transition-duration: 0.4s;
-	-webkit-transition-property: left, right, top;
+	-webkit-border-radius: 3px;
+	        border-radius: 3px;
+	
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	
+	background-color 	: #fff;
+	border 				: 1px solid #d8d8d8;
+	border-bottom-width : 2px;
+	border-top-width 	: 1px;
+	
+	.post-img{
+		background-size: 100%;
+		background-repeat: no-repeat;
+	}
+	
+	.post-details{
+		position 			: absolute;
+		background-color 	: #DDDDDD;
+		top 				: 0 ;
 
-	& img{
-		min-width : 100%;
-		max-width : 100%;
-		margin:0;
-		padding:0;
-		border-radius: 3px 3px 0 0;
+        -webkit-transform : rotateY(-180deg);
+		opacity: 0;
+
+
 	}
 
-	& h3{
-		margin: -10px 0px -10px -5px;	
+	h3{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		outline: none;
+		color: rgb(235, 235, 235);
+		margin: 0;
+		background-color: black;
+		font-size: 15px;
+		line-height: 20px;
+		padding: 10px;
+	}
+
+	p.link{
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		outline:none;
 	}
 
-	.post-header{
-		height: 38px;
-		background-color: rgb(65, 65, 65);
-		border-radius: 3px 3px 0px 0px;
+	.post-details, .post-img {
+    	-webkit-transition:all 0.7s;
+    		    transition:all 0.7s;
+    		    	-webkit-border-radius: 1px;
+	        border-radius: 1px;
+			width  				: @post-width - 2;
+		height 				: @post-width;
 	}
 
-	.post-link{
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		margin: 5px 0 0 0px;
-		display: block;
-		font-size: 16px;
-		background-image: url(../img/link.png);
-		background-size: 20px;
-		background-repeat: no-repeat;
-		padding-left: 25px;
-		background-position: 0% 50%;
-		color : #777777;
-	}
+	&.flipped{
 
-	.post-detail{
-		padding:10px;
-		background-color:white;
-	}
-
-	.post-timestamp{
-		font-size: 12px;
-		.count-tooltip{
-			padding-left: 10px;
-			margin-left: -10px;
+	    -webkit-transform: rotateY(-180deg);
+	     
+	    .post-img{
+			opacity: 0;
+		}
+	
+		.post-details{
+			opacity:1;
 		}
 	}
 
-	.pinner-tags{
-		margin:0;
-	}
 }
 
 .editable{
@@ -102,9 +128,9 @@
 		color: #faa732;
 	}
 	
-	border-radius: 5px;
-	padding: 5px;
-	margin-right: 5px;
+	// border-radius: 5px;
+	// padding: 5px;
+	// margin-right: 5px;
 }
 
 .pinner-tag{
@@ -113,7 +139,6 @@
 
 .pinner-control{
 	float: right;
-	margin-top: -40px;
 	margin-right: 0px;
 	opacity: 0.5;
 	transition-duration: 0.4s;
@@ -188,19 +213,6 @@
 
 #new-post-form{
 	float:left;
-	::-webkit-input-placeholder { 
-		font-style: italic;
-	}
-	::-moz-placeholder { 
-		font-style: italic;
-		} /* firefox 19+ */
-	:-ms-input-placeholder { 
-		font-style: italic;
-		} /* ie */
-	input:-moz-placeholder { 
-		font-style: italic;
-	}
-
 }
 
 #scroll-top{
@@ -226,15 +238,7 @@
 
 #Pinner{
 	// TODO : media queries to allow user to get mode than 4 columns in high resolution
-	max-width: 1160px;
 	margin: 0 auto;
-	// -webkit-backface-visibility: hidden;
-	// -webkit-perspective: 1000;
-	// transform: translateZ(0);
-	// -webkit-transform: translateZ(0);
-	// -moz-transform: translateZ(0);
-	// -o-transform: translateZ(0);
-	// -ms-transform: translateZ(0);
 }
 
 .modal {

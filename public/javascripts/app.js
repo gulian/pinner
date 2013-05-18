@@ -34,7 +34,9 @@ $(function(){
 			"click .toggle-edit-btn" : "toggleUpdate",
 			"click .edit-btn" : "_update",
 			"keypress .editable" : "enterHandler",
-			"click .post-link" : "linkClickHandler"
+			"click .post-link" : "linkClickHandler",
+			"click .post-img" : "flip",
+			"click .post-details" : "flip"
 		},
 
 		template: _.template($("script#pin-template").html()),
@@ -68,7 +70,7 @@ $(function(){
 		_delete: function(){
 			this.model.destroy();
 			this.remove();
-			this.layout();
+			// this.layout();
 		},
 
 		toggleUpdate: function(){
@@ -104,15 +106,19 @@ $(function(){
 			this.model.save(null ,{
 				success: function(model){
 					self.render();
-					self.layout();
+					// self.layout();
 			}});
 		},
 
-		layout: function(){
-			new Masonry( document.getElementById('post-list'), {
-				columnWidth: columnWidth
-			});
+		flip: function(){
+			this.$el.toggleClass('flipped');
 		},
+
+		// layout: function(){
+		// 	new Masonry( document.getElementById('post-list'), {
+		// 		columnWidth: columnWidth
+		// 	});
+		// },
 
 		linkClickHandler: function(){
 			this.model.set('count', 1*this.model.get('count') + 1 );
@@ -175,7 +181,7 @@ $(function(){
 			_.each(this.posts.models, function(post){
 				self.add_post(post);
 			});
-			self.layout();
+			// self.layout();
 		},
 
 		create_post: function(event){
@@ -222,10 +228,10 @@ $(function(){
 
 			if(post.get('img'))
 				$el.find('img').load(function(){
-					self.layout();
+					// self.layout();
 				});
-			else
-				self.layout();
+			// else
+				// self.layout();
 
 			this.resetform();
 		},
@@ -337,11 +343,11 @@ $(function(){
 			$('#new-post-hidden-img').val($img.attr('src'));
 		},
 
-		layout: function(){
-			new Masonry( document.getElementById('post-list'), {
-				columnWidth: columnWidth
-			});
-		},
+		// layout: function(){
+		// 	new Masonry( document.getElementById('post-list'), {
+		// 		columnWidth: columnWidth
+		// 	});
+		// },
 
 		resetform: function(){
 			$("#new-post-form input").val('');
