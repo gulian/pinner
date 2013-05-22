@@ -15,6 +15,10 @@
 	<script src="/javascripts/vendor/timeago/moment.js"></script>
 	<script src="/javascripts/vendor/timeago/livestamp.js"></script>
 	<script src="/javascripts/vendor/mustache/mustache.js"></script>
+	<script src="/javascripts/model/post.js"></script>
+	<script src="/javascripts/collection/posts.js"></script>
+	<script src="/javascripts/view/postView.js"></script>
+	<script src="/javascripts/view/postListView.js"></script>
 	<script src="/javascripts/app.js"></script>
  	<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
 </head>
