@@ -79,20 +79,16 @@ exports.fetch = function(req, res){
 		var matches = body.match(/<img[^>]+src="([^">]+)"/gi),
 			parsed  = parser.parse(url) ;
 
-		if(!matches)
-			return res.json(200, page);
+		if(matches)
+			for (var i = 0; i < matches.length; i++) {
+				var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
 
-		for (var i = 0; i < matches.length; i++) {
-			var src = matches[i].match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi);
-
-			if(src && ( src[0].indexOf('http') !== -1 || src[0].indexOf('https') !== -1) ){
-				page.imgs.push(src[0]);
-			} else if(src){
-				page.imgs.push(parsed.protocol + '//' + parsed.host + src[0]);
+				if(src && ( src[0].indexOf('http') !== -1 || src[0].indexOf('https') !== -1) ){
+					page.imgs.push(src[0]);
+				} else if(src){
+					page.imgs.push(parsed.protocol + '//' + parsed.host + src[0]);
+				}
 			}
-		}
-
-		var webshot = require('webshot');
 
 		url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
 
@@ -103,12 +99,10 @@ exports.fetch = function(req, res){
 
 		var phantom = require('phantom');
 
-		phantom.create(function(ph) {
-			ph.createPage(function(page_) {
-				phantom.clipRect = { top: 0 ,left: 0, width: 1024, height: 768 };
-				phantom.viewportSize = { width: 1024, height: 768 };
+		phantom.create(function(ph){
+			ph.createPage(function(page_){
 				page_.open(url, function(status) {
-					if(status === "success"){
+					if(status === 'success'){
 						page_.render('public/'+public_url);
 						page.imgs.unshift(public_url);
 					}
@@ -116,28 +110,6 @@ exports.fetch = function(req, res){
 				});
 			});
 		});
-
-
-
-	});
-
-};
-
-exports.preview = function(req, res){
-
-	var webshot = require('webshot');
-	var url = req.query.url.indexOf("http://") + req.query.url.indexOf("https://") === -2 ? 'http://' + req.query.url : req.query.url;
-
-	var filename  = url.replace(/[^\w\s-]/g, '').trim().toLowerCase().replace( /[-\s]+/g, '-');
-		filename += '.png';
-
-	var public_url = 'img/previews/'+filename ;
-
-	webshot(url , 'public/'+public_url, function(error) {
-		if(error)
-			return res.json(500);
-		else
-			return res.json(200, filename);
 	});
 };
 

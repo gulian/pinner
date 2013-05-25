@@ -34,7 +34,6 @@ app.post('/post', post.add);
 app.delete('/post/:id', post.delete);
 
 app.get('/fetch', post.fetch);
-app.get('/preview', post.preview);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("pinner running on " + app.get('port'));
