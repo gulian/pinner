@@ -1,4 +1,19 @@
 Pinner
 ======
 
-just run `npm install` then `node app`
+System librairies
+======
+* g++
+* zlib
+
+Installation
+======
+Install dependencies
+~~~
+npm install
+~~~
+
+Run app
+~~~
+node app`
+~~~
