@@ -1,6 +1,7 @@
 {
   "name": "pinner",
   "version": "0.0.1",
+  "repository": "gulian/pinner",
   "private": false,
   "scripts": {
     "start": "node app", 
